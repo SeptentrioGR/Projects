@@ -14,7 +14,8 @@ public class GameManager : MonoBehaviour
     private float initialFixedDelta;
     private EnemyManager enemyManager;
 
-
+    public Locale mLocale;
+    TextUIInitialiser textUIInit;
     void Awake()
     {
 
@@ -31,6 +32,10 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         initialFixedDelta = Time.fixedDeltaTime;
+        mLocale = new Locale();
+        mLocale.LoadTextAssets();
+        mLocale.PrintAllAssets();
+        mLocale.LoadResource("en");
     }
 
 
@@ -82,4 +87,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         Time.fixedDeltaTime = initialFixedDelta;
     }
+
+
+
+
 }

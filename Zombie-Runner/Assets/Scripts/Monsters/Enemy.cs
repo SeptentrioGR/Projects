@@ -2,6 +2,8 @@
 [RequireComponent(typeof(Rigidbody))]
 public class Enemy : MonoBehaviour
 {
+    private GameObject target;
+    public bool AttackPlayer = false;
     private bool walking;
     public Rigidbody mRigidBody;
     private Animator mAnimator;
@@ -9,6 +11,7 @@ public class Enemy : MonoBehaviour
     public float damage;
     public float nextAttack;
     public float attackRate;
+
     void Awake()
     {
         mRigidBody = GetComponent<Rigidbody>();
@@ -24,9 +27,15 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (mAnimator.GetBool("Attack"))
+        AttackPlayer = mAnimator.GetBool("Attack");
+        if (AttackPlayer)
         {
-
+            Debug.Log("Found Player");
+            if (Time.time > nextAttack)
+            {
+                nextAttack = Time.time + attackRate;
+                GetComponent<Enemy_AI>().target.SendMessage("Damage", damage);
+            }
         }
 
     }
@@ -46,16 +55,18 @@ public class Enemy : MonoBehaviour
 
         if (other.gameObject.GetComponent<PlayerScript>())
         {
-            Debug.Log("Found Player");
-            PlayerScript ps = other.gameObject.GetComponent<PlayerScript>();
-            if (Time.time > nextAttack)
-            {
-                nextAttack = Time.time + attackRate;
-                //ps.SendMessage("Damage", damage);
-            }
+            AttackPlayer = true;
         }
     }
 
+    void OnTriggerExit(Collider other)
+    {
+
+        if (other.gameObject.GetComponent<PlayerScript>())
+        {
+            AttackPlayer = false;
+        }
+    }
 
 
 

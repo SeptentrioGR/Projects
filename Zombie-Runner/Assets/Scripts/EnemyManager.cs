@@ -14,6 +14,8 @@ public class EnemyManager : MonoBehaviour
     private int NumberOfEnemies;
     private int EnemyEachWave;
     private int Wave;
+    public float mSpawnTime;
+    public float SpawnRate;
     public static Dictionary<string, EnemyManagerAction> actions = new Dictionary<string, EnemyManagerAction>();
     void Awake()
     {
@@ -37,7 +39,7 @@ public class EnemyManager : MonoBehaviour
             spawnLocations[i] = transform.GetChild(i);
         }
         EnemyHolder = transform;
-        InvokeRepeating("SpawnEnemy", 2, 5);
+        InvokeRepeating("SpawnEnemy",mSpawnTime,SpawnRate);
         actions.Add("Score", OnEnemyDeath);
     }
 
