@@ -1,0 +1,138 @@
+fileFormatVersion: 2
+guid: 6d8815e3872f73e44932032ff600eb84
+timeCreated: 1490801103
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Character
+    100002: Character_Base
+    100004: Character_Bracer
+    100006: Character_Cloth_Podia1
+    100008: Character_Cloth_Top
+    100010: Character_Eyebrows
+    100012: Character_Eyes
+    100014: Character_Scroll
+    100016: Character_sigil
+    100018: Cloth_Base
+    100020: Hair
+    100022: //RootNode
+    100024: Sandals
+    400000: Character
+    400002: Character_Base
+    400004: Character_Bracer
+    400006: Character_Cloth_Podia1
+    400008: Character_Cloth_Top
+    400010: Character_Eyebrows
+    400012: Character_Eyes
+    400014: Character_Scroll
+    400016: Character_sigil
+    400018: Cloth_Base
+    400020: Hair
+    400022: //RootNode
+    400024: Sandals
+    2300000: Character
+    2300002: Character_Base
+    2300004: Character_Bracer
+    2300006: Character_Cloth_Podia1
+    2300008: Character_Cloth_Top
+    2300010: Character_Eyebrows
+    2300012: Character_Eyes
+    2300014: Character_Scroll
+    2300016: Character_sigil
+    2300018: Cloth_Base
+    2300020: Hair
+    2300022: Sandals
+    3300000: Character
+    3300002: Character_Base
+    3300004: Character_Bracer
+    3300006: Character_Cloth_Podia1
+    3300008: Character_Cloth_Top
+    3300010: Character_Eyebrows
+    3300012: Character_Eyes
+    3300014: Character_Scroll
+    3300016: Character_sigil
+    3300018: Cloth_Base
+    3300020: Hair
+    3300022: Sandals
+    4300000: Character_Bracer
+    4300002: Character_Cloth_Podia1
+    4300004: Character_Cloth_Top
+    4300006: Character_Base
+    4300008: Character_Eyebrows
+    4300010: Character_Eyes
+    4300012: Character_Scroll
+    4300014: Character_sigil
+    4300016: Cloth_Base
+    4300018: Hair
+    4300020: Sandals
+    4300022: Character
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
