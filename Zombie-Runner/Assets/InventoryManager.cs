@@ -3,41 +3,52 @@ using UnityEngine;
 
 public class InventoryManager
 {
+	public static InventoryManager instance;
 
-    public Dictionary<string, Item> Items = new Dictionary<string, Item>();
+	public InventoryManager() { }
 
-    public bool AquireItem(string itemName)
-    {
+	public static InventoryManager Instance
+	{
+		get
+		{
+			return instance;
+		}
+	}
 
-        if (Items.ContainsKey(itemName))
-        {
-            return true;
-        } else
-        {
-            return false;
-        }
-    }
+	public Dictionary<string, Item> Items = new Dictionary<string, Item>();
 
-    public void AddItem(string itemName, Item item)
-    {
-        if (Items.ContainsKey(itemName))
-        {
-            Debug.Log("Item Already Exist ");
-        } else
-        {
-            Items.Add(itemName, item);
-        }
+	public bool AquireItem(string itemName)
+	{
 
-    }
+		if (Items.ContainsKey(itemName))
+		{
+			return true;
+		} else
+		{
+			return false;
+		}
+	}
 
-    public void RemoveItem(string itemName)
-    {
-        if (Items.ContainsKey(itemName))
-        {
-            Items.Remove(itemName);
-        } else
-        {
-            Debug.Log("Item Removed ");
-        }
-    }
+	public void AddItem(string itemName, Item item)
+	{
+		if (Items.ContainsKey(itemName))
+		{
+			Debug.Log("Item Already Exist ");
+		} else
+		{
+			Items.Add(itemName, item);
+		}
+
+	}
+
+	public void RemoveItem(string itemName)
+	{
+		if (Items.ContainsKey(itemName))
+		{
+			Items.Remove(itemName);
+		} else
+		{
+			Debug.Log("Item Removed ");
+		}
+	}
 }

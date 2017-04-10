@@ -1,22 +1,7 @@
 ﻿using UnityEngine;
 
-public class Item : MonoBehaviour
+public interface Item
 {
-
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    void Action()
-    {
-
-    }
+	void Action();
+	void Use();
 }
