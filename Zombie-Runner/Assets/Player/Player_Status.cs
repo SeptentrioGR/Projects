@@ -28,12 +28,12 @@ public class Player_Status : MonoBehaviour
             case StatusType.Sanity:
                 StatusName.text = "SANITY";
                 break;
-            case StatusType.Hunger:
-                StatusName.text = "HUNGER";
-                break;
-            case StatusType.Thirst:
-                StatusName.text = "THIRST";
-                break;
+            //case StatusType.Hunger:
+            //    StatusName.text = "HUNGER";
+            //    break;
+            //case StatusType.Thirst:
+            //    StatusName.text = "THIRST";
+            //    break;
         }
     }
 
@@ -58,12 +58,12 @@ public class Player_Status : MonoBehaviour
             case StatusType.Sanity:
                 value = m_ps.mSanity;
                 break;
-            case StatusType.Hunger:
-                value = m_ps.s_system.checkHunger();
-                break;
-            case StatusType.Thirst:
-                value = m_ps.s_system.checkThirst();
-                break;
+            //case StatusType.Hunger:
+            //    value = m_ps.s_system.checkHunger();
+            //    break;
+            //case StatusType.Thirst:
+            //    value = m_ps.s_system.checkThirst();
+            //    break;
         }
 
 

@@ -3,33 +3,83 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager{
-	private static UIManager instance = new UIManager();
-	public Dictionary<string, Image> Icons = new Dictionary<string, Image>();
-	private Image RadioIcon;
-
-	public static UIManager Instance
+public class UIManager : MonoBehaviour
+{
+	public bool FirstRun = true;
+	public static UIManager mInstance = new UIManager();
+	public enum IconElements
 	{
-		get
-		{
-			return instance;
-		}
+		Radio
+	}
+
+	public enum PanelElements
+	{
+		Pause,
+		Fade
+	}
+
+	public enum TextElements
+	{
+		Clock
+	}
+
+	public Dictionary<IconElements, Image> Icons = new Dictionary<IconElements, Image>();
+	public Dictionary<PanelElements, GameObject> Panels = new Dictionary<PanelElements, GameObject>();
+	public Dictionary<TextElements, Text> Texts = new Dictionary<TextElements, Text>();
+
+	public void Awake()
+	{
+
+		mInstance = this;
+		Initialize();
+
 	}
 
 	public void Initialize()
 	{
-		RadioIcon = GameObject.Find("RadioIcon").GetComponent<Image>();
-		Icons.Add("Radio", RadioIcon);
-		RadioIcon.gameObject.SetActive(false);
+		AddIcon(IconElements.Radio, "RadioIcon");
+		AddPanel(PanelElements.Pause, "PausePanel");
+		AddPanel(PanelElements.Fade, "Fade");
+		AddTextElementByName(TextElements.Clock, "ClockTimer");
+		Icons[IconElements.Radio].enabled = false;
+		Texts[TextElements.Clock].enabled = false;
+		Panels[PanelElements.Pause].SetActive(false);
+		Panels[PanelElements.Fade].SetActive(false);
 	}
 
 
-	public void AddIconDictionary(string name,Image icon)
+	public void AddIcon(IconElements name,string icon)
 	{
-		Icons.Add(name, icon);
+		Image imageIcon;
+		if (!Icons.TryGetValue(name, out imageIcon))
+		{
+			imageIcon = GameObject.Find(icon).GetComponent<Image>();
+			Icons.Add(name, imageIcon);
+		}
 	}
 
-	public Image GetIcon(string name)
+	public void AddTextElementByName(TextElements ele, string name)
+	{
+		Text text;
+		if (!Texts.TryGetValue(ele, out text))
+		{
+			text = GameObject.Find(name).GetComponent<Text>();
+			Texts.Add(ele, text);
+		}
+	}
+
+	public void AddPanel(PanelElements ele, string name)
+	{
+		GameObject panelGameObject;
+		if (!Panels.TryGetValue(ele, out panelGameObject))
+		{
+			panelGameObject = GameObject.Find(name);
+			Panels.Add(ele, panelGameObject);
+		}
+	}
+
+
+	public Image GetIcon(IconElements name)
 	{
 		Image ImageIcon;
 		if (Icons.TryGetValue(name, out ImageIcon))
@@ -37,5 +87,11 @@ public class UIManager{
 			return ImageIcon;
 		}
 		return null;
+	}
+
+
+	public void ChangeIconColor(Color color)
+	{
+		Icons[IconElements.Radio].color = color;
 	}
 }

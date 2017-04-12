@@ -13,24 +13,33 @@ public class PlayerScript : MonoBehaviour
 	[Header("Stamina Thresholds")]
 	public float decreaseWhileWalk;
 	public float decreaseWhileRun;
-	public SurvivalSystem s_system;
-	public Flashlight light;
+	public new Flashlight light;
 	public InventoryManager Inventory;
 	public bool UnderWater;
 	public GameObject Radio;
-	public Animator mAnimation;
-
-	FirstPersonController controller;
-	CharacterController c_controller;
+	private Animator mAnimation;
+	private FirstPersonController controller;
+	private CharacterController c_controller;
 	private int HoldingItem = 0;
 	private bool UpdateHoldingItems;
 
+	public Vector3 StartingTransform;
+	public Quaternion StartingRotation;
 
+	public FirstPersonController getPlayerController()
+	{
+		return controller;
+	}
 
+	public void Reset()
+	{
+		HoldingItem = 0;
+		UpdateHoldingItems = true;
+		transform.rotation = StartingRotation;
+	}
 
 	void Start()
 	{
-		s_system = new SurvivalSystem(100, 100, 1.5f, 2.5f);
 		mAnimation = GetComponent<Animator>();
 		controller = GetComponent<FirstPersonController>();
 		c_controller = GetComponent<CharacterController>();
@@ -39,59 +48,82 @@ public class PlayerScript : MonoBehaviour
 		mAnimation.enabled = false;
 		light.Initialize(100);
 		Radio = GameObject.Find("RadioPrefab");
-
+		StartingTransform = transform.position;
+		StartingRotation = Quaternion.identity;
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		HealthSystem();
-		StaminaSystem();
-		s_system.Update();
-		light.Update();
+		if (GameManager.Instance.gameState == GameStates.Game)
+		{
+			HealthSystem();
+			StaminaSystem();
+			light.Update();
 		//controller.UpdateStaminaValue(mStamina);
 
-		if (Input.GetKeyDown(KeyCode.F))
-		{
-			HoldingItem = 1;
-			UpdateHoldingItems = true;
-		}
-
-		if (Input.GetKeyDown(KeyCode.Alpha1))
-		{
-			HoldingItem = 2;
-			if (light.LightIsPowered())
-			{
-				light.Power();
-			}
-			UpdateHoldingItems = true;
-		}
-
-		if(HoldingItem != 2)
-		{
-			Radio.SetActive(false);
-		}
-
-
-
-		if (UpdateHoldingItems)
-		{
-			UpdateHoldingItems = false;
-			switch (HoldingItem)
-			{
-				case 0:
-					break;
-				case 1:
-					light.Power();
-					break;
-				case 2:
-					Radio.SetActive(true);
-					break;
-			}
-		}
-
-
 		
+			if (Input.GetKeyDown(KeyCode.F))
+			{
+				HoldingItem = 1;
+				UpdateHoldingItems = true;
+			}
+
+			if (Input.GetKeyDown(KeyCode.Alpha1) && UIManager.mInstance.Icons[UIManager.IconElements.Radio].enabled)
+			{
+				HoldingItem = 2;
+				if (light.LightIsPowered())
+				{
+					light.Power();
+				}
+				UpdateHoldingItems = true;
+			}
+
+			if (HoldingItem != 2)
+			{
+				Radio.SetActive(false);
+			}
+			if (GameManager.Instance.CheckIfPaused())
+			{
+				controller.enabled = false;
+
+			}
+
+
+
+			if (UpdateHoldingItems)
+			{
+				UpdateHoldingItems = false;
+				switch (HoldingItem)
+				{
+					case 0:
+						break;
+					case 1:
+						light.Power();
+						break;
+					case 2:
+						Radio.SetActive(true);
+						break;
+				}
+			}
+
+		}
+		
+	}
+
+	void Death()
+	{
+		if (light.LightIsPowered())
+		{
+			light.Power();
+		}
+		if (!mAnimation.enabled)
+		{
+			StartCoroutine("ResetGame");
+			mAnimation.enabled = true;
+			controller.enabled = false;
+			c_controller.enabled = false;
+		}
 	}
 
 	void HealthSystem()
@@ -102,13 +134,7 @@ public class PlayerScript : MonoBehaviour
 		}
 		if (mHealth <= 0.0f)
 		{
-			if (!mAnimation.enabled)
-			{
-				StartCoroutine("ResetGame");
-				mAnimation.enabled = true;
-				controller.enabled = false;
-				c_controller.enabled = false;
-			}
+			Death();
 		}
 		mHealth = Mathf.Clamp(mHealth, 0, 100);
 	}
@@ -161,7 +187,7 @@ public class PlayerScript : MonoBehaviour
 	IEnumerator ResetGame()
 	{
 		Debug.Log("Reseting game.... ");
-		yield return new WaitForSeconds(.5f);
+		yield return new WaitForSeconds(1f);
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 	}
 

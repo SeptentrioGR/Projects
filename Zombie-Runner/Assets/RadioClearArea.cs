@@ -18,15 +18,13 @@ public class RadioClearArea : MonoBehaviour {
 	void Update () {
 		transform.position = player.transform.position;
 		timeSinceLastTrigger += Time.deltaTime;
-
+		UIManager.mInstance.ChangeIconColor(Color.black);
 		if (ClearArea)
 		{
-			Debug.Log("Clear Area");
+			//Debug.Log("Clear Area");
+			UIManager.mInstance.ChangeIconColor(Color.green);
 		}
 	}
-
-	private bool foundClearArea = false;
-
 
 
 	void OnTriggerStay(Collider collider)

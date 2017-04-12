@@ -21,7 +21,11 @@ public class Helicopter : MonoBehaviour {
 		distance = (transform.position - (Destination + offset)).magnitude;
 		if (Called)
 		{
-			GoToArea();
+			CountDown.Instance.Initialize();
+			if (CountDown.Instance.TimeIsUp())
+			{
+				GoToArea();
+			}
 		}
 
 		if(distance < 0.5f)
