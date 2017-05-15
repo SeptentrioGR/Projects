@@ -116,6 +116,7 @@ public class Enemy_AI : MonoBehaviour
 		attacking = false;
 		if (!agent.isStopped)
 		{
+			agent.velocity = Vector3.zero;
 			agent.isStopped = true;
 		}
 	}
@@ -138,6 +139,7 @@ public class Enemy_AI : MonoBehaviour
 		walking = false;
 		attacking = true;
 		if (agent.isStopped)
+			agent.velocity = Vector3.zero;
 		{
 			agent.isStopped = true;
 		}

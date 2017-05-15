@@ -7,6 +7,8 @@ public class UIManager : MonoBehaviour
 {
 	public bool FirstRun = true;
 	public static UIManager mInstance = new UIManager();
+	public GameObject UICanvas;
+
 
 	public enum IconElements
 	{
@@ -36,6 +38,7 @@ public class UIManager : MonoBehaviour
 
 	public void Initialize()
 	{
+		UICanvas = GameObject.Find("GameCanvas");
 		AddIcon(IconElements.Radio, "RadioIcon");
 		AddPanel(PanelElements.Pause, "PausePanel");
 		AddPanel(PanelElements.Winning, "WinPanel");
@@ -72,7 +75,7 @@ public class UIManager : MonoBehaviour
 		GameObject panelGameObject;
 		if (!Panels.TryGetValue(ele, out panelGameObject))
 		{
-			panelGameObject = GameObject.Find(name);
+			panelGameObject = UICanvas.transform.Find(name).gameObject;
 			Panels.Add(ele, panelGameObject);
 		}
 	}
