@@ -18,7 +18,7 @@ namespace ZombieRun.Player
 					break;
 				case "Helicopter":
 					hit.collider.gameObject.SetActive(false);
-					Game.Instance.GameOver();
+                    GameManager.Instance.GameOver();
 					break;
 			}
 		}

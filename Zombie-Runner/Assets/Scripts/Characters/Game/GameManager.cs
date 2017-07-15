@@ -8,181 +8,167 @@ using UnityStandardAssets.CrossPlatformInput;
 
 namespace ZombieRun
 {
-	public class GameManager : MonoBehaviour
-	{
+    public class GameManager : MonoBehaviour
+    {
 
-		public GameStates gameState;
+        public GameStates gameState;
 
-		private static GameManager mInstance;
-		private GameScreenManager GameScreenManager;	
-		private InputManager input;
-		private float initialFixedDelta;
-		private float score;
-		private bool isPaused;
-		public bool TransitionEffect;
-		private float targetAlpha = 255;
-		public MouseLook mouseLook;
-		public bool lockCursor = true;
-		private bool m_cursorIsLocked = true;
-		public bool loading = true;
+        private static GameManager m_Instance;
+        private GameScreenManager GameScreenManager;
 
-		public void CheckIsLocked(bool value)
-		{
-			m_cursorIsLocked = value;
-		}
-
-		public static GameManager Instance
-		{
-			get
-			{
-				return mInstance;
-			}
-
-			set
-			{
-				mInstance = value;
-			}
-		}
+        private float initialFixedDelta;
+        private float score;
 
 
-		void Awake()
-		{
-			Debug.Log("Game Manager Awake");
-			if (Instance == null)
-			{
-				Instance = this;
-				DontDestroyOnLoad(gameObject);
-			}
-			else
-			{
-				Destroy(gameObject);
-			}
-			input = new InputManager();
+        public bool lockCursor = true;
+        private bool m_cursorIsLocked = true;
 
-			Initialise();
-
-			DontDestroyOnLoad(gameObject);
-		}
-
-		void Initialise()
-		{
-			initialFixedDelta = Time.fixedDeltaTime;
-		}
-
-		void Update()
-		{
-			switch (gameState)
-			{
-				case GameStates.Menu:
-					SetCursorLock(false);
-					break;
-				case GameStates.Game:
-					GameLogic();
-					break;
-				case GameStates.Gameover:
-					SetCursorLock(false);
-					break;
-			}
-	
-		}
-
-		public void GameLogic()
-		{
-
-			if (input.PauseKeyIsPressed())
-			{
-				isPaused = !isPaused;
-				Pause(isPaused);
-				SetCursorLock(!isPaused);
-			}
-
-			if (Input.GetKeyDown(KeyCode.Escape))
-			{
-				//SceneManager.LoadScene(SceneManager.GetSceneByBuildIndex(0).name);
-			}
+        private bool m_GameFinished = false;
+        private bool m_IsPaused;
 
 
-		}
+        public void CheckIsLocked(bool value)
+        {
+            m_cursorIsLocked = value;
+        }
 
-		void FixedUpdate()
-		{
-			UpdateCursorLock();
-		}
+        public static GameManager Instance
+        {
+            get
+            {
+                return m_Instance;
+            }
 
-		public void UpdateCursorLock()
-		{
-			//if the user set "lockCursor" we check & properly lock the cursos
-			if (lockCursor)
-				InternalLockUpdate();
-		}
+            set
+            {
+                m_Instance = value;
+            }
+        }
 
-		public void SetCursorLock(bool value)
-		{
-			lockCursor = value;
-			if (!lockCursor)
-			{//we force unlock the cursor if the user disable the cursor locking helper
-				Cursor.lockState = CursorLockMode.None;
-				Cursor.visible = true;
-			}
-		}
 
-		private void InternalLockUpdate()
-		{
-			if (CheckIfPaused())
-			{
-				m_cursorIsLocked = false;
-			}
-			else if (!CheckIfPaused())
-			{
-				m_cursorIsLocked = true;
-			}
+        void Awake()
+        {
+            Instance = this;
+            Initialise();
+            DontDestroyOnLoad(gameObject);
+        }
 
-			if (m_cursorIsLocked)
-			{
-				Cursor.lockState = CursorLockMode.Locked;
-				Cursor.visible = false;
-			
-			}
-			else if (!m_cursorIsLocked)
-			{
-				Cursor.lockState = CursorLockMode.None;
-				Cursor.visible = true;
+        void Initialise()
+        {
+            initialFixedDelta = Time.fixedDeltaTime;
+            InputManager input = new InputManager();
+            StateManager stateManager = new StateManager();
+            PlayerManager playerManager = new PlayerManager();
+            playerManager.Initialize();
+        }
 
-			}
-		}
+        void Update()
+        {
+            StateManager.Instance.Update();
+        }
+
+        public void GameLogic()
+        {
+
+            if (InputManager.instance.PauseKeyIsPressed())
+            {
+                m_IsPaused = !m_IsPaused;
+                Pause(m_IsPaused);
+                SetCursorLock(!m_IsPaused);
+            }
+        }
+
+        void FixedUpdate()
+        {
+            UpdateCursorLock();
+        }
+
+        public void UpdateCursorLock()
+        {
+            //if the user set "lockCursor" we check & properly lock the cursos
+            if (lockCursor)
+                InternalLockUpdate();
+        }
+
+        public void SetCursorLock(bool value)
+        {
+            lockCursor = value;
+            if (!lockCursor)
+            {//we force unlock the cursor if the user disable the cursor locking helper
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+        }
+
+        private void InternalLockUpdate()
+        {
+            if (CheckIfPaused())
+            {
+                m_cursorIsLocked = false;
+            }
+            else if (!CheckIfPaused())
+            {
+                m_cursorIsLocked = true;
+            }
+
+            if (m_cursorIsLocked)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+
+            }
+            else if (!m_cursorIsLocked)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+
+            }
+        }
 
 
 
-		public bool CheckIfPaused()
-		{
-			return isPaused;
-		}
+        public bool CheckIfPaused()
+        {
+            return m_IsPaused;
+        }
 
-		public void Pause(bool isPaused)
-		{
-			if (isPaused)
-			{
+        public void Pause(bool isPaused)
+        {
+            if (isPaused)
+            {
 
-				Time.timeScale = 0;
-				Time.fixedDeltaTime = 0;	
-			}
-			else if (!isPaused)
-			{
-				Time.timeScale = 1;
-				Time.fixedDeltaTime = initialFixedDelta;
-			}
-		}
-
-
-		public void ResetGame()
-		{
-			gameState = GameStates.Game;
-			SetCursorLock(true);
-			isPaused = false;
-			Pause(false);
-		}
+                Time.timeScale = 0;
+                Time.fixedDeltaTime = 0;
+            }
+            else if (!isPaused)
+            {
+                Time.timeScale = 1;
+                Time.fixedDeltaTime = initialFixedDelta;
+            }
+        }
 
 
+        public void ResetGame()
+        {
+            gameState = GameStates.Game;
+            SetCursorLock(true);
+            m_IsPaused = false;
+            Pause(false);
+        }
 
-	}
+        public bool GameIsFinished()
+        {
+            return m_GameFinished;
+        }
+
+        public void GameOver()
+        {
+            m_GameFinished = true;
+            UIManager.mInstance.Panels[UIManager.PanelElements.Winning].SetActive(true);
+            //enemyManager.gameObject.SetActive(false);
+            GameManager.Instance.gameState = GameStates.Gameover;
+
+        }
+
+    }
 }

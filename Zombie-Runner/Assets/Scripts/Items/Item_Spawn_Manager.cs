@@ -1,21 +1,23 @@
 ﻿using UnityEngine;
-public class Item_Spawn_Manager : MonoBehaviour
+public class ItemManager : MonoBehaviour
 {
+    private static ItemManager m_Instance;
+    public static ItemManager Instance
+    {
+        get
+        {
+            return m_Instance;
+        }
+    }
 
-	public float spawnTime;
+    public float spawnTime;
 	public GameObject[] itemToSpawn;
 	public Transform[] SpawnLocations;
 
-
-	void Start()
-	{
-		SpawnRadio();
-	}
-
-	void Update()
-	{
-
-	}
+    public void Initialize()
+    {
+        SpawnRadio();
+    }
 
 	void SpawnRadio()
 	{

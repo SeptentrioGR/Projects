@@ -12,7 +12,7 @@ public class LineOfSight : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponent<PlayerScript>() && !targetIsOnSight)
+        if (other.gameObject.GetComponent<Character>() && !targetIsOnSight)
         {
             targetIsOnSight = true;
 
@@ -29,7 +29,7 @@ public class LineOfSight : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.GetComponent<PlayerScript>() && targetIsOnSight)
+        if (other.gameObject.GetComponent<Character>() && targetIsOnSight)
         {
             targetIsOnSight = false;
         }

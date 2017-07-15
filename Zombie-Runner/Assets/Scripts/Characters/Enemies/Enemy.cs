@@ -55,7 +55,7 @@ public class Enemy : MonoBehaviour
 	void OnTriggerEnter(Collider other)
 	{
 
-		if (other.gameObject.GetComponent<PlayerScript>())
+		if (other.gameObject.GetComponent<Character>())
 		{
 			AttackPlayer = true;
 		}
@@ -64,7 +64,7 @@ public class Enemy : MonoBehaviour
 	void OnTriggerExit(Collider other)
 	{
 
-		if (other.gameObject.GetComponent<PlayerScript>())
+		if (other.gameObject.GetComponent<Character>())
 		{
 			AttackPlayer = false;
 		}
