@@ -7,6 +7,7 @@ namespace ZombieRun
     {
 
         private static PrefabManager m_Instance;
+
         public static PrefabManager Instance
         {
             get
@@ -16,9 +17,9 @@ namespace ZombieRun
         }
 
         public GameObject[] m_ListOfPrefabs;
-        public Character m_Player;
+        public Character    m_Player;
         public EnemyManager m_EnemyManager;
-        public GameObject Map;
+        public GameObject   m_Map;
 
         public GameObject GetItemInList(string id)
         {
@@ -35,12 +36,6 @@ namespace ZombieRun
         void Awake()
         {
             m_Instance = this;
-
-        }
-
-        void Update()
-        {
-
         }
     }
 }

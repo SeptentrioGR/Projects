@@ -27,11 +27,6 @@ namespace ZombieRun
             m_Instance = this;
         }
 
-        public void SetGameState(State gameState)
-        {
-            m_CurrentState = gameState;
-        }
-
         public void Initialize()
         {
             GameState = new GameState();
@@ -39,6 +34,12 @@ namespace ZombieRun
 
             ListOfStates.Add(GameStates.Game, GameState);
             ListOfStates.Add(GameStates.Menu, MenuState);
+        }
+
+      
+        public void SetState(GameStates state)
+        {
+            m_CurrentState = ListOfStates[state];
         }
 
 

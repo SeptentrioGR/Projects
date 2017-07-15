@@ -14,6 +14,11 @@ public class ItemManager : MonoBehaviour
 	public GameObject[] itemToSpawn;
 	public Transform[] SpawnLocations;
 
+    private void Awake()
+    {
+        m_Instance = this;
+    }
+
     public void Initialize()
     {
         SpawnRadio();

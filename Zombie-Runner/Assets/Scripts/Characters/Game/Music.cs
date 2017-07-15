@@ -23,26 +23,14 @@ namespace ZombieRun.Music
 			DontDestroyOnLoad(this);
 		}
 
-		// Update is called once per frame
-		void Update()
-		{
-			switch (GameManager.Instance.gameState)
-			{
-				case GameStates.Menu:
-					if (MusicSource.clip != Musics[0])
-					{
-						MusicSource.clip = Musics[0];
-						MusicSource.Play();
-					}
-					break;
-				case GameStates.Game:
-					if (MusicSource.clip != Musics[1])
-					{
-						MusicSource.clip = Musics[1];
-						MusicSource.Play();
-					}
-					break;
-			}
-		}
+        public void SetMusic(int index)
+        {
+            if (MusicSource.clip != Musics[index])
+            {
+                MusicSource.clip = Musics[index];
+                MusicSource.Play();
+            }
+        }
+		
 	}
 }

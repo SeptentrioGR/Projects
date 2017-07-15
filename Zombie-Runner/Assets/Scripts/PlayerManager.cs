@@ -8,6 +8,12 @@ public class PlayerManager{
     public static PlayerManager m_Instance;
     private Character Player;
 
+    public PlayerManager()
+    {
+        Debug.Log("Player Initialization");
+        m_Instance = this;
+    }
+
     public static PlayerManager Instance
     {
         get
@@ -18,7 +24,6 @@ public class PlayerManager{
 
     public void Initialize()
     {
-        m_Instance = this;
         Player = PrefabManager.Instance.m_Player;
     }
 

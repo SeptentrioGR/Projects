@@ -33,6 +33,7 @@ namespace ZombieRun.Player
 		public delegate void OnLayerChange(Layer newLayer);//declare new delegate type
 		public OnLayerChange onLayerChange;//Instansiate a objserver set
 		World_Interaction interactions;
+
 		void Start()
 		{
 			viewCamera = Camera.main;

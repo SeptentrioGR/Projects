@@ -9,7 +9,7 @@ namespace ZombieRun
 
 		public void PlayGame()
 		{
-			GameManager.Instance.gameState = GameStates.Game;
+            GameManager.Instance.SetState(GameStates.Game);
 			SceneManager.LoadScene(1);
 		}
 
@@ -20,15 +20,14 @@ namespace ZombieRun
 
 		public void LoadMenu()
 		{
-			GameManager.Instance.gameState = GameStates.Menu;
-			SceneManager.LoadScene(0);
+            GameManager.Instance.SetState(GameStates.Menu);
+            SceneManager.LoadScene(0);
 		}
 
 		public void ResetGame()
 		{
-			GameManager.Instance.gameState = GameStates.Game;
-			SceneManager.LoadScene(1);
-		
+            GameManager.Instance.ResetGame();
+            SceneManager.LoadScene(1);
 		}
 
 

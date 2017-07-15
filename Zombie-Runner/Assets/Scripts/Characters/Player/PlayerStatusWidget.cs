@@ -12,74 +12,28 @@ public class PlayerStatusWidget : MonoBehaviour
             return m_Instance;
         }
     }
+    public PlayerStatusWidgetItem[] m_PlayerStatusWidgetItem;
+   
+    private Character m_Player = null;
 
-    public enum StatusType
+    private void Awake()
     {
-        Health, Sanity, Stamina, Hunger, Thirst
+        m_Instance = this;
     }
 
-    public StatusType status;
-
-    public Text StatusName;
-    private Slider StatusSlider;
-    private float value;
-    private Character m_Player;
-
-    void Start()
+    public void Initialize()
     {
-        m_Player = PlayerManager.Instance.GetPlayer();
-        StatusSlider = GetComponent<Slider>();
-        switch (status)
+        foreach (PlayerStatusWidgetItem item in m_PlayerStatusWidgetItem)
         {
-            case StatusType.Health:
-                StatusName.text = "HEALTH";
-                break;
-            case StatusType.Stamina:
-                StatusName.text = "STAMINA";
-                break;
-            case StatusType.Sanity:
-                StatusName.text = "SANITY";
-                break;
-            //case StatusType.Hunger:
-            //    StatusName.text = "HUNGER";
-            //    break;
-            //case StatusType.Thirst:
-            //    StatusName.text = "THIRST";
-            //    break;
+            item.Initialize();
         }
     }
 
-
-    void RefreshSliders()
+    public void RefreshContent()
     {
-        StatusSlider.value = value;
-        StatusUpdate();
-
-    }
-
-    void StatusUpdate()
-    {
-        switch (status)
+        foreach (PlayerStatusWidgetItem item in m_PlayerStatusWidgetItem)
         {
-            case StatusType.Health:
-                value = m_Player.mHealth;
-                break;
-            case StatusType.Stamina:
-                value = m_Player.mStamina;
-                break;
-            case StatusType.Sanity:
-                value = m_Player.mSanity;
-                break;
-            //case StatusType.Hunger:
-            //    value = m_ps.s_system.checkHunger();
-            //    break;
-            //case StatusType.Thirst:
-            //    value = m_ps.s_system.checkThirst();
-            //    break;
+            item.RefreshContent();
         }
-
-
     }
-
-
 }

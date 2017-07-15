@@ -6,8 +6,14 @@ using ZombieRun;
 
 public class UIManager : MonoBehaviour
 {
-    public bool FirstRun = true;
-    public static UIManager mInstance = new UIManager();
+    private static UIManager m_Instance;
+    public static UIManager Instance
+    {
+        get
+        {
+            return m_Instance;
+        }
+    }
 
     public enum IconElements
     {
@@ -31,7 +37,7 @@ public class UIManager : MonoBehaviour
 
     public void Awake()
     {
-        mInstance = this;
+        m_Instance = this;
     }
 
     public void TogglePausePanel(bool value)
@@ -43,8 +49,8 @@ public class UIManager : MonoBehaviour
     public void Initialize()
     {
         AddIcon(IconElements.Radio,"RadioIcon");
-        AddPanel(PanelElements.Pause, "PausePanel");
-        AddPanel(PanelElements.Winning, "WinPanel");
+        AddPanel(PanelElements.Pause, "PauseMenu");
+        AddPanel(PanelElements.Winning, "WinMenu");
         AddTextElementByName(TextElements.Clock, "ClockTimer");
         Icons[IconElements.Radio].enabled = false;
         Texts[TextElements.Clock].enabled = false;
@@ -87,4 +93,5 @@ public class UIManager : MonoBehaviour
     {
         Icons[IconElements.Radio].color = color;
     }
+
 }

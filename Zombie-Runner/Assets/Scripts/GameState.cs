@@ -20,35 +20,33 @@ namespace ZombieRun
         {
             PlayerManager.Instance.Initialize();
             GameManager.Instance.ResetGame();
-            ItemManager.Instance.Initialize();
             CursorManager.Instance.Initialise();
+            UIManager.Instance.Initialize();
+            ItemManager.Instance.Initialize();
         }
 
         public override void Update()
         {
-            if (!GameManager.Instance.GameIsFinished())
+            CursorManager.Instance.Update();
+            UIManager.Instance.TogglePausePanel(GameManager.Instance.CheckIfPaused());
+
+
+            if (UIManager.Instance.Icons[UIManager.IconElements.Radio].enabled)
             {
-                CursorManager.Instance.Update();
-                UIManager.mInstance.TogglePausePanel(GameManager.Instance.CheckIfPaused());
-
-
-                if (UIManager.mInstance.Icons[UIManager.IconElements.Radio].enabled)
-                {
-                    Player.GetComponent<Character>().IAquireRadio();
-                }
-
-                PrefabManager.Instance.m_EnemyManager.Spawn();
-
-                UIManager.mInstance.ChangeIconColor(Color.black);
-
-                if (RadioClearArea.Instance.ClearArea)
-                {
-                    //Debug.Log("Clear Area");
-                    UIManager.mInstance.ChangeIconColor(Color.green);
-                }
-
-
+                Player.GetComponent<Character>().IAquireRadio();
             }
+
+            PrefabManager.Instance.m_EnemyManager.Spawn();
+
+            UIManager.Instance.ChangeIconColor(Color.black);
+
+            if (RadioClearArea.Instance.ClearArea)
+            {
+                //Debug.Log("Clear Area");
+                UIManager.Instance.ChangeIconColor(Color.green);
+            }
+
+            PlayerStatusWidget.Instance.RefreshContent();
 
         }
     }

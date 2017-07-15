@@ -13,8 +13,8 @@ namespace ZombieRun.Player
 			switch (hit.collider.name)
 			{
 				case "Radio":
-					UIManager.mInstance.Icons[UIManager.IconElements.Radio].enabled = true;
-					GameObject.Destroy(hit.collider.gameObject);
+                    
+                    GameObject.Destroy(hit.collider.gameObject);
 					break;
 				case "Helicopter":
 					hit.collider.gameObject.SetActive(false);

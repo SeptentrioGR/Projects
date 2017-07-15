@@ -9,9 +9,19 @@ public class CursorManager{
     {
         get
         {
-            return m_Instace;
+            if (m_Instace == null)
+            {
+                m_Instace = new CursorManager();
+                return m_Instace;
+            }
+            else
+            {
+                return m_Instace;
+            }
         }
     }
+    
+
 
     void Start () {
 		
@@ -19,7 +29,7 @@ public class CursorManager{
 	
     public void Initialise()
     {
-
+      
     }
 
 	public void Update () {

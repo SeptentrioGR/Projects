@@ -20,8 +20,8 @@ public class CountDown : MonoBehaviour {
 	public void Initialize()
 	{
 		StartCounting = true;
-		UIManager.mInstance.Texts[UIManager.TextElements.Clock].enabled = true;
-		UIManager.mInstance.Icons[UIManager.IconElements.Radio].enabled = false;
+		UIManager.Instance.Texts[UIManager.TextElements.Clock].enabled = true;
+		UIManager.Instance.Icons[UIManager.IconElements.Radio].enabled = false;
 	}
 	
 

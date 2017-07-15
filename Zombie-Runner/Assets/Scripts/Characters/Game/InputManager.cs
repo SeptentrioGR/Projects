@@ -8,7 +8,11 @@ public class InputManager {
 
 	public InputManager(){}
 
-	public static InputManager Instance
+    public bool lockCursor = true;
+    private bool m_cursorIsLocked = true;
+
+
+    public static InputManager Instance
 	{
 		get
 		{
@@ -28,8 +32,7 @@ public class InputManager {
 	}
 
     public void Update()
-    {
-       
+    {    
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             //SceneManager.LoadScene(SceneManager.GetSceneByBuildIndex(0).name);
@@ -37,13 +40,53 @@ public class InputManager {
 
         if (Input.GetKeyDown(KeyCode.M))
         {
-            PrefabManager.Instance.Map.SetActive(true);
+            Debug.Log("Pressed M");
+            MapWidget.Instance.Toggle();
         }
 
         if (Input.GetAxis("Vertical") > 0.5f || Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("Horizontal") < -0.5f || Input.GetAxis("Vertical") < -0.5f)
         {
-           PrefabManager.Instance.Map.SetActive(false);
+           PrefabManager.Instance.m_Map.SetActive(false);
+        }
+
+    }
+
+    public bool KeyIsPressed(KeyCode kc)
+    {
+        return Input.GetKeyDown(kc);
+    }
+
+    public void SetCursorLock(bool value)
+    {
+        m_cursorIsLocked = value;
+        SetCursorLockState();
+    }
+
+    public void SetCursorLockState()
+    {
+        if (m_cursorIsLocked)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
+        }
+        else if (!m_cursorIsLocked)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
         }
     }
+
+    public void CheckIsLocked(bool value)
+    {
+        m_cursorIsLocked = value;
+    }
+
+    public void ResetGame()
+    {
+        SetCursorLock(true);
+    }
+
 
 }
