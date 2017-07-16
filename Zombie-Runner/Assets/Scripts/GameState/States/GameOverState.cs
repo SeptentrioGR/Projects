@@ -4,12 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace ZombieRun
 {
-    public class MenuState : State
+    public class GameOverState : State
     {
-        public MenuState()
-        {
-            Debug.Log("Initialize MenuState");
-        }
 
         public override void Start()
         {
@@ -18,7 +14,9 @@ namespace ZombieRun
 
         public override void Update()
         {
-
+            InputManager.instance.SetCursorLock(false);
+            PrefabManager.Instance.m_ListOfPrefabs[3].SetActive(true);
         }
     }
+
 }

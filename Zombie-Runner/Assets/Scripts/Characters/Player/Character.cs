@@ -13,9 +13,6 @@ public enum ItemElement
 
 public class Character : MonoBehaviour
 {
-
-
-
 	public float mHealth = 100;
 	public float mStamina = 100;
 	public float mSanity = 100;
@@ -37,8 +34,8 @@ public class Character : MonoBehaviour
 	public Quaternion StartingRotation;
 	public Item[] Items;
 	private Dictionary<string, GameObject> UsableItems = new Dictionary<string, GameObject>();
-	[SerializeField] public int itemInUse;
-	[SerializeField] public Transform Hand;
+    private int itemInUse;
+	public Transform Hand;
 	
 	public void IAquireRadio()
 	{
@@ -59,12 +56,10 @@ public class Character : MonoBehaviour
 
 	void Start()
 	{
-		mAnimation = GetComponent<Animator>();
 		controller = GetComponent<FirstPersonController>();
 		c_controller = GetComponent<CharacterController>();
 		controller.enabled = true;
 		c_controller.enabled = true;
-		mAnimation.enabled = false;
 		light.Initialize(100);
 		StartingTransform = transform.position;
 		StartingRotation = Quaternion.identity;
@@ -101,7 +96,6 @@ public class Character : MonoBehaviour
 		HealthSystem();
 		StaminaSystem();
 		light.Update();
-		////controller.UpdateStaminaValue(mStamina);
 
 		if (itemInUse == 0)
 		{
@@ -157,7 +151,17 @@ public class Character : MonoBehaviour
 					break;
 			}
 		}
-	}
+
+
+        if (Cursor.lockState == CursorLockMode.Locked)
+        {
+            getPlayerController().enabled = true;
+        }
+        else if (Cursor.lockState == CursorLockMode.None)
+        {
+            getPlayerController().enabled = false;
+        }
+    }
 
 	private void ShowItemToUse(string name)
 	{
@@ -196,8 +200,6 @@ public class Character : MonoBehaviour
 
 	void StaminaSystem()
 	{
-
-
 		if (Input.GetKey(KeyCode.LeftShift))
 		{
 			mStamina -= decreaseWhileRun;
@@ -228,20 +230,16 @@ public class Character : MonoBehaviour
 		}
 	}
 
-
-
 	void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.GetComponent<Water>())
 		{
 			UnderWater = !UnderWater;
-		}
-		
+		}	
 	}
 
 	public void Damage(float value)
 	{
-
 		mHealth -= value;
 	}
 

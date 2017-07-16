@@ -35,18 +35,7 @@ public class InputManager {
     {    
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            //SceneManager.LoadScene(SceneManager.GetSceneByBuildIndex(0).name);
-        }
-
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            Debug.Log("Pressed M");
-            MapWidget.Instance.Toggle();
-        }
-
-        if (Input.GetAxis("Vertical") > 0.5f || Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("Horizontal") < -0.5f || Input.GetAxis("Vertical") < -0.5f)
-        {
-           PrefabManager.Instance.m_Map.SetActive(false);
+            GameManager.Instance.SetState(GameStates.Menu);
         }
 
     }

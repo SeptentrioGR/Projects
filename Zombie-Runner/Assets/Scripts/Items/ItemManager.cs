@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-public class ItemManager : MonoBehaviour
+public class ItemManager
 {
     private static ItemManager m_Instance;
+
     public static ItemManager Instance
     {
         get
@@ -10,25 +11,22 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    public float spawnTime;
-	public GameObject[] itemToSpawn;
-	public Transform[] SpawnLocations;
+    private GameObject[] itemToSpawn;
+    private Transform[] SpawnLocations;
 
-    private void Awake()
+    public ItemManager(GameObject[] itemToSpawn, Transform[] SpawnLocations)
     {
         m_Instance = this;
-    }
-
-    public void Initialize()
-    {
+        this.itemToSpawn = itemToSpawn;
+        this.SpawnLocations = SpawnLocations;
         SpawnRadio();
     }
 
-	void SpawnRadio()
+    public void SpawnRadio()
 	{
 		int RandomLocation = Random.Range(0, SpawnLocations.Length);
 		Transform location = SpawnLocations[RandomLocation];
-		GameObject radioPrefab = Instantiate(itemToSpawn[0], location.position, Quaternion.identity) as GameObject;
+		GameObject radioPrefab = GameObject.Instantiate(itemToSpawn[0], location.position, Quaternion.identity) as GameObject;
 		radioPrefab.gameObject.name = itemToSpawn[0].name;
 		radioPrefab.transform.SetParent(location);
 	}

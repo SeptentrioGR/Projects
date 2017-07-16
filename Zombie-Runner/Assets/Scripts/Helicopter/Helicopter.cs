@@ -21,8 +21,9 @@ public class Helicopter : MonoBehaviour {
 		distance = (transform.position - (Destination + offset)).magnitude;
 		if (Called)
 		{
-			CountDown.Instance.Initialize();
-			if (CountDown.Instance.TimeIsUp())
+            ClockWidget.Instance.StartTimer();
+
+            if (CountDown.Instance.TimeIsUp())
 			{
 				GoToArea();
 			}

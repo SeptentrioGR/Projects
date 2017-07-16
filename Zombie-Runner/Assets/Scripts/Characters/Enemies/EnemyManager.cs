@@ -6,15 +6,29 @@ namespace ZombieRun
 	{
 		public delegate void EnemyManagerAction();
 		public EnemyManagerAction OnEnemyDeath;
-		public static EnemyManager instance;
+
+		private static EnemyManager m_Instance;
+        public static EnemyManager Instance
+        {
+            get
+            {
+                return m_Instance;
+            }
+        }
+
 		private Transform EnemyHolder;
-		public GameObject[] enemies;
-		private Transform[] spawnLocations;
-		public int maxNumberOfEnemies;
+
+        public GameObject[] enemies;
+        public Transform[] spawnLocations;
+
+
+        public int maxNumberOfEnemies;
 		private int numberOfEnemies = 0;
 		private int NumberOfEnemies;
 		private int EnemyEachWave;
 		private int Wave;
+
+
 		public float mSpawnTime;
 		public float SpawnRate;
 		public float StartingTimer;
@@ -23,22 +37,14 @@ namespace ZombieRun
 
 		void Awake()
 		{
-			instance = this;
-
+			m_Instance = this;
 		}
 
-		void Start()
+        public void Initialize()
 		{
-
-			spawnLocations = new Transform[transform.childCount];
-
-			for (int i = 0; i < transform.childCount; i++)
-			{
-				spawnLocations[i] = transform.GetChild(i);
-			}
-			EnemyHolder = transform;
-
-		}
+            GameObject eh = new GameObject("EnemyHolder");
+            EnemyHolder = eh.transform;
+        }
 
 
 		public void Spawn()

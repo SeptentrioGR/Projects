@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 namespace ZombieRun
 {
     public class PrefabManager : MonoBehaviour
     {
-
         private static PrefabManager m_Instance;
 
         public static PrefabManager Instance
@@ -20,6 +21,7 @@ namespace ZombieRun
         public Character    m_Player;
         public EnemyManager m_EnemyManager;
         public GameObject   m_Map;
+        public Text Clock;
 
         public GameObject GetItemInList(string id)
         {

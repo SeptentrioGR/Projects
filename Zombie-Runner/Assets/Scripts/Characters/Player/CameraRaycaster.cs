@@ -32,12 +32,11 @@ namespace ZombieRun.Player
 
 		public delegate void OnLayerChange(Layer newLayer);//declare new delegate type
 		public OnLayerChange onLayerChange;//Instansiate a objserver set
-		World_Interaction interactions;
 
 		void Start()
 		{
 			viewCamera = Camera.main;
-			interactions = new World_Interaction();
+		    new Utilities();
 		}
 
 		void Update()
@@ -58,7 +57,7 @@ namespace ZombieRun.Player
 
 					if (Input.GetKeyDown(KeyCode.E))
 					{
-						interactions.hitSomethingInFrontOfMe(mRaycastHit);
+						Utilities.hitSomethingInFrontOfMe(mRaycastHit);
 					}
 
 					return;

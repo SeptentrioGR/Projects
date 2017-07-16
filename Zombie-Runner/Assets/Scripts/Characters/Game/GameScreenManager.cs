@@ -6,6 +6,7 @@ public enum Screens
 {
 	Game,Menu
 }
+
 [System.Serializable]
 public class GameScreenManager{
 

@@ -26,7 +26,7 @@ namespace ZombieRun
 
         GameState GameState;
         MenuState MenuState;
-
+        GameOverState GameOverState;
         Dictionary<GameStates, State> ListOfStates = new Dictionary<GameStates, State>();
 
         public static GameManager Instance
@@ -44,35 +44,55 @@ namespace ZombieRun
 
         void Awake()
         {
-            m_Instance = this;
+            if (m_Instance == null)
+            {
+                m_Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else if (m_Instance != this)
+            {
+                Destroy(this.gameObject);
+                return;
+            }
+
+
+        }
+
+        void Start()
+        {
+            initialFixedDelta = Time.fixedDeltaTime;
 
             GameState = new GameState();
             MenuState = new MenuState();
+            GameOverState = new GameOverState();
 
             ListOfStates.Add(GameStates.Game, GameState);
             ListOfStates.Add(GameStates.Menu, MenuState);
+            ListOfStates.Add(GameStates.Gameover, GameOverState);
 
-            SetState(GameStates.Game);
+            new InputManager();
 
-            DontDestroyOnLoad(gameObject);
-        }
+           SetState(GameStates.Menu);
 
-        private void Start()
-        {
-            initialFixedDelta = Time.fixedDeltaTime;
-            InputManager input = new InputManager();
-            PlayerManager playerManager = new PlayerManager();    
-            m_CurrentState.Start();
         }
 
         public void SetState(GameStates state)
         {
             m_CurrentState = ListOfStates[state];
+            m_CurrentState.Start();
         }
 
         void Update()
         {
             m_CurrentState.Update();
+
+            if (InputManager.instance.PauseKeyIsPressed())
+            {
+                m_IsPaused = !m_IsPaused;
+                Pause(m_IsPaused);
+                InputManager.instance.SetCursorLock(!m_IsPaused);
+            }
+
 
             if (CheckIfPaused())
             {
@@ -82,17 +102,8 @@ namespace ZombieRun
             {
                 InputManager.instance.SetCursorLock(true);
             }
-        }
 
-        public void GameLogic()
-        {
-
-            if (InputManager.instance.PauseKeyIsPressed())
-            {
-                m_IsPaused = !m_IsPaused;
-                Pause(m_IsPaused);
-                InputManager.instance.SetCursorLock(!m_IsPaused);
-            }
+            InputManager.instance.Update();
         }
 
         public bool CheckIfPaused()
@@ -132,10 +143,12 @@ namespace ZombieRun
         {
             m_GameFinished = true;
             SetState(GameStates.Gameover);
-            UIManager.Instance.Panels[UIManager.PanelElements.Winning].SetActive(true);
+            UIManager.Instance.ToggleWinPanel(true);
             //enemyManager.gameObject.SetActive(false);
         
         }
+
+      
 
     }
 }
