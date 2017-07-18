@@ -152,15 +152,6 @@ public class Character : MonoBehaviour
 			}
 		}
 
-
-        if (Cursor.lockState == CursorLockMode.Locked)
-        {
-            getPlayerController().enabled = true;
-        }
-        else if (Cursor.lockState == CursorLockMode.None)
-        {
-            getPlayerController().enabled = false;
-        }
     }
 
 	private void ShowItemToUse(string name)
@@ -222,14 +213,6 @@ public class Character : MonoBehaviour
 
 	}
 
-	void OnCollisionEnter(Collision collision)
-	{
-		if (collision.gameObject.tag == "Hellicopter")
-		{
-			ResetGame();
-		}
-	}
-
 	void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.GetComponent<Water>())
@@ -243,12 +226,7 @@ public class Character : MonoBehaviour
 		mHealth -= value;
 	}
 
-	IEnumerator ResetGame()
-	{
-		Debug.Log("Reseting game.... ");
-		yield return new WaitForSeconds(1f);
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-	}
+
 
 }
 

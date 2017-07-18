@@ -15,7 +15,7 @@ namespace ZombieRun
             Debug.Log("Initialize MenuState");
         }
 
-        public override void Start()
+        public void Setup()
         {
             SceneManager.LoadScene(0);
         }

@@ -3,55 +3,48 @@ using System.Collections.Generic;
 using UnityEngine;
 using ZombieRun;
 
-public class InputManager {
-	public static InputManager instance = new InputManager();
+public class InputManager
+{
+    public static InputManager instance = new InputManager();
 
-	public InputManager(){}
+    public InputManager() { }
 
     public bool lockCursor = true;
     private bool m_cursorIsLocked = true;
 
 
     public static InputManager Instance
-	{
-		get
-		{
-			return instance;
-		}
-	}
-
-
-	public bool PauseKeyIsPressed()
-	{
-		if (Input.GetKeyDown(KeyCode.P))
-		{
-			Debug.Log("Pressed Key For Paused");
-			return true;
-		}
-		return false;
-	}
-
-    public void Update()
-    {    
-        if (Input.GetKeyDown(KeyCode.Escape))
+    {
+        get
         {
-            GameManager.Instance.SetState(GameStates.Menu);
+            return instance;
         }
-
     }
 
-    public bool KeyIsPressed(KeyCode kc)
+
+    public bool PauseKeyIsPressed()
     {
-        return Input.GetKeyDown(kc);
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Debug.Log("Pressed Key For Paused");
+            return true;
+        }
+        return false;
+    }
+
+    public void Update()
+    {
+
+
     }
 
     public void SetCursorLock(bool value)
     {
         m_cursorIsLocked = value;
-        SetCursorLockState();
+        RefreshCursorLockState();
     }
 
-    public void SetCursorLockState()
+    public void RefreshCursorLockState()
     {
         if (m_cursorIsLocked)
         {
@@ -63,19 +56,6 @@ public class InputManager {
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-
         }
     }
-
-    public void CheckIsLocked(bool value)
-    {
-        m_cursorIsLocked = value;
-    }
-
-    public void ResetGame()
-    {
-        SetCursorLock(true);
-    }
-
-
 }

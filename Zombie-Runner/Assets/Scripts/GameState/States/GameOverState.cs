@@ -6,15 +6,8 @@ namespace ZombieRun
 {
     public class GameOverState : State
     {
-
-        public override void Start()
-        {
-
-        }
-
         public override void Update()
         {
-            InputManager.instance.SetCursorLock(false);
             PrefabManager.Instance.m_ListOfPrefabs[3].SetActive(true);
         }
     }

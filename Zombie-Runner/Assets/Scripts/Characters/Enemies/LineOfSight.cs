@@ -4,6 +4,7 @@ public class LineOfSight : MonoBehaviour
 {
     private bool targetIsOnSight;
     private Enemy_AI ai;
+
     void Start()
     {
         ai = transform.GetComponentInParent<Enemy_AI>();
@@ -18,12 +19,8 @@ public class LineOfSight : MonoBehaviour
 
             if (ai.target == null)
             {
-                Debug.Log("Found Something " + other.gameObject.name);
                 ai.setTarget(other.gameObject);
             }
-
-
-
         }
     }
 

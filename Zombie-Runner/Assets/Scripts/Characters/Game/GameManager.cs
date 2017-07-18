@@ -11,23 +11,11 @@ namespace ZombieRun
     public class GameManager : MonoBehaviour
     {
         private static GameManager m_Instance;
-        private GameScreenManager GameScreenManager;
 
         private float initialFixedDelta;
         private float score;
-
-
-
         private bool m_GameFinished = false;
-        private bool m_IsPaused;
-
-     
-        State m_CurrentState;
-
-        GameState GameState;
-        MenuState MenuState;
-        GameOverState GameOverState;
-        Dictionary<GameStates, State> ListOfStates = new Dictionary<GameStates, State>();
+        private bool m_GameIsPaused = false;
 
         public static GameManager Instance
         {
@@ -37,11 +25,10 @@ namespace ZombieRun
             }
         }
 
-        public State GetState()
-        {
-            return m_CurrentState;
-        }
+        [SerializeField]
+        public GameStates m_CurrentGameState;
 
+   
         void Awake()
         {
             if (m_Instance == null)
@@ -54,69 +41,43 @@ namespace ZombieRun
                 Destroy(this.gameObject);
                 return;
             }
-
-
         }
 
         void Start()
         {
             initialFixedDelta = Time.fixedDeltaTime;
-
-            GameState = new GameState();
-            MenuState = new MenuState();
-            GameOverState = new GameOverState();
-
-            ListOfStates.Add(GameStates.Game, GameState);
-            ListOfStates.Add(GameStates.Menu, MenuState);
-            ListOfStates.Add(GameStates.Gameover, GameOverState);
-
             new InputManager();
-
-           SetState(GameStates.Menu);
-
-        }
-
-        public void SetState(GameStates state)
-        {
-            m_CurrentState = ListOfStates[state];
-            m_CurrentState.Start();
         }
 
         void Update()
         {
-            m_CurrentState.Update();
-
-            if (InputManager.instance.PauseKeyIsPressed())
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                m_IsPaused = !m_IsPaused;
-                Pause(m_IsPaused);
-                InputManager.instance.SetCursorLock(!m_IsPaused);
+                TogglePause();
             }
-
-
-            if (CheckIfPaused())
-            {
-                InputManager.instance.SetCursorLock(false);
-            }
-            else if (!CheckIfPaused())
-            {
-                InputManager.instance.SetCursorLock(true);
-            }
-
-            InputManager.instance.Update();
         }
 
-        public bool CheckIfPaused()
+        public GameStates GetState()
         {
-            return m_IsPaused;
+            return m_CurrentGameState;
+        }
+
+        public void TogglePause()
+        {
+            m_GameIsPaused = !m_GameIsPaused;
+            Pause(m_GameIsPaused);
         }
 
         public void Pause(bool isPaused)
         {
+            UIManager.Instance.TogglePausePanel(isPaused);
+            PlayerManager.Instance.GetPlayer().getPlayerController().enabled = !isPaused;
+            InputManager.instance.SetCursorLock(!isPaused);
             if (isPaused)
             {
                 Time.timeScale = 0;
                 Time.fixedDeltaTime = 0;
+
             }
             else if (!isPaused)
             {
@@ -125,16 +86,7 @@ namespace ZombieRun
             }
         }
 
-
-        public void ResetGame()
-        {
-            SetState(GameStates.Game);
-            InputManager.instance.ResetGame();
-            m_IsPaused = false;
-            Pause(false);
-        }
-
-        public bool GameIsFinished()
+        public bool IsGameFinished()
         {
             return m_GameFinished;
         }
@@ -142,13 +94,13 @@ namespace ZombieRun
         public void GameOver()
         {
             m_GameFinished = true;
-            SetState(GameStates.Gameover);
+            InputManager.instance.SetCursorLock(false);
             UIManager.Instance.ToggleWinPanel(true);
-            //enemyManager.gameObject.SetActive(false);
-        
         }
 
-      
-
+        public void ResetGame()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 }

@@ -14,13 +14,11 @@ namespace ZombieRun
     {
         public static void hitSomethingInFrontOfMe(RaycastHit hit)
         {
-            Debug.Log("Hit Something " + hit.collider.gameObject.name);
-
             switch (hit.collider.name)
             {
-                case "Radio":
+                case "Radio_Interactable":
                     GameObject.Destroy(hit.collider.gameObject);
-                    RadioIconWidget.Instance.Toggle();
+                    RadioIconWidget.Instance.Enabled(true);
                     break;
                 case "Helicopter":
                     GameManager.Instance.GameOver();

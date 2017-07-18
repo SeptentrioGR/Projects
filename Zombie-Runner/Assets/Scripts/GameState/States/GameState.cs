@@ -6,34 +6,29 @@ namespace ZombieRun
 {
     public class GameState : State
     {
-        public GameState()
+
+        public HouseChecked[] m_ListOfHouses;
+
+        private void Awake()
         {
-            Debug.Log("Initialize GameState");
+            Setup();
         }
 
-        public void Initialize()
+        public void Setup()
         {
-
-        }
-
-        public override void Start()
-        {
-            new PlayerManager();
-
-            GameManager.Instance.ResetGame();
-            EnemyManager.Instance.Initialize();
+            new PlayerManager();       
             new ItemManager(GameConfig.Instance.GetItemToSpawn(), GameConfig.Instance.GetItemSpawnLocations());
             new CountDown(60, 00, 1);
+            EnemyManager.Instance.Initialize();
+            InputManager.instance.SetCursorLock(true);
+
         }
 
         public override void Update()
         {
             Character player = PlayerManager.Instance.GetPlayer().GetComponent<Character>();
 
-            UIManager.Instance.TogglePausePanel(GameManager.Instance.CheckIfPaused());
-
-
-            if (RadioIconWidget.Instance.Enabled())
+            if (RadioIconWidget.Instance.isEnabled())
             {
                 player.IAquireRadio();
             }
@@ -42,25 +37,32 @@ namespace ZombieRun
 
             RadioIconWidget.Instance.ChangeIconColor(Color.black);
 
-            if (RadioClearArea.Instance.ClearArea)
+            if (!ClockWidget.Instance.Counting())
+            {           
+                if (RadioClearArea.Instance.ClearArea)
+                {
+                    RadioIconWidget.Instance.ChangeIconColor(Color.green);
+                }
+            }
+            else if (ClockWidget.Instance.Counting())
             {
-                RadioIconWidget.Instance.ChangeIconColor(Color.green);
+                RadioIconWidget.Instance.Enabled(false);
             }
 
             PlayerStatusWidget.Instance.RefreshContent();
 
             if (Input.GetAxis("Vertical") > 0.5f || Input.GetAxis("Horizontal") > 0.5f || Input.GetAxis("Horizontal") < -0.5f || Input.GetAxis("Vertical") < -0.5f)
             {
-                PrefabManager.Instance.m_Map.SetActive(false);
+                MapWidget.Instance.Enabled(false);
             }
 
             if (Input.GetKeyDown(KeyCode.M))
             {
-                Debug.Log("Pressed M");
                 MapWidget.Instance.Toggle();
             }
 
 
+            InputManager.instance.Update();
         }
     }
 }
