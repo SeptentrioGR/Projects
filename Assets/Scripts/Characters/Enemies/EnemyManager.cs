@@ -49,10 +49,11 @@ namespace ZombieRun
 
 		public void Spawn()
 		{
-				if (numberOfEnemies <= maxNumberOfEnemies)
+				if (numberOfEnemies < maxNumberOfEnemies)
 				{
 					Timer -= Time.deltaTime;
 				}
+
 				if (Timer <= 0)
 				{
 					Timer = StartingTimer;

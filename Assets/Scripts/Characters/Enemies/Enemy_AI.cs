@@ -52,14 +52,14 @@ public class Enemy_AI : MonoBehaviour
 		IsVisibleByPlayer = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
 	}
 
-
-
 	void Update()
 	{
 		agent.speed = speed;
 		mAnimator.SetBool(getAnimation(0), walking);
 		mAnimator.SetBool(getAnimation(1), attacking);
+
 		TurnAndLookTarget();
+
 		if (target && !IsVisibleByPlayer)
 		{
 			distance = Vector3.Distance(target.transform.position, transform.position);

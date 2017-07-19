@@ -167,13 +167,8 @@ public class Character : MonoBehaviour
 		{
 			light.Power();
 		}
-		if (!mAnimation.enabled)
-		{
+
 			StartCoroutine("ResetGame");
-			mAnimation.enabled = true;
-			controller.enabled = false;
-			c_controller.enabled = false;
-		}
 	}
 
 	void HealthSystem()

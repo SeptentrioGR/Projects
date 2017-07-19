@@ -35,27 +35,34 @@ public class InputManager
     public void Update()
     {
 
-
+        RefreshCursorLockState();
     }
 
     public void SetCursorLock(bool value)
     {
         m_cursorIsLocked = value;
-        RefreshCursorLockState();
+       
     }
 
     public void RefreshCursorLockState()
     {
+        CursorLockMode wantedMode = Cursor.lockState;
+
+        bool Visibility = Cursor.visible;
+
         if (m_cursorIsLocked)
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            wantedMode = CursorLockMode.Locked;
+            Visibility = false;
 
         }
         else if (!m_cursorIsLocked)
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            wantedMode = CursorLockMode.None;
+            Visibility = true;
         }
+
+        Cursor.lockState = wantedMode;
+        Cursor.visible = Visibility;
     }
 }

@@ -17,7 +17,7 @@ namespace ZombieRun
 
         public void Exit()
         {
-            Application.Quit();
+            SceneManager.LoadScene(0);
         }
         public void Resume()
         {
