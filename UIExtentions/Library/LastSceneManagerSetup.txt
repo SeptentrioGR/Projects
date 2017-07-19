@@ -1,4 +1,0 @@
-sceneSetups:
-- path: Assets/UIExtentions.unity
-  isLoaded: 1
-  isActive: 1
