@@ -12,4 +12,6 @@ public class SimpleCursorChange : MonoBehaviour {
     {
         CameraManager.Instance.SetIcon(m_Sprite);
     }
+
+   
 }

@@ -6,3 +6,5 @@ Zombie-Runner.Editor.Plugins.csproj
 Zombie-Runner.sln
 Zombie-Runner/.vs/Zombie-Runner/v15/.suo
 Temp/
+Build/
+.vs/Zombie-Runner/v15/.suo

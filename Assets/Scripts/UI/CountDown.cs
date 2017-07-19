@@ -41,7 +41,7 @@ public class CountDown
 
     public bool TimeIsUp()
     {
-        if (m <= 0)
+        if (m <= 0 && s == 0)
         {
             return true;
         }
