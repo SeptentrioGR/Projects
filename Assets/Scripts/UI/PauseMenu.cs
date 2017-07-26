@@ -11,8 +11,8 @@ namespace ZombieRun
 
         void Start()
         {
-            m_ResumeButton.onClick.AddListener(Resume);
-            m_QuitButton.onClick.AddListener(Exit);
+            GuiManager.Instance.AssingActionToButton(ButtonAction.Resume, m_ResumeButton);
+            GuiManager.Instance.AssingActionToButton(ButtonAction.Back, m_QuitButton);
         }
 
         public void Exit()

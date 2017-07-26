@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 namespace ZombieRun
 {
-    public class GameState : State
+    public class Game : State
     {
 
         public HouseChecked[] m_ListOfHouses;
@@ -24,7 +26,7 @@ namespace ZombieRun
 
         }
 
-        public override void Update()
+        public void Update()
         {
             Character player = PlayerManager.Instance.GetPlayer().GetComponent<Character>();
 
@@ -64,5 +66,6 @@ namespace ZombieRun
 
             InputManager.instance.Update();
         }
+
     }
 }
