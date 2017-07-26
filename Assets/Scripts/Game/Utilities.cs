@@ -18,7 +18,7 @@ namespace ZombieRun
             {
                 case "Radio_Interactable":
                     GameObject.Destroy(hit.collider.gameObject);
-                    RadioIconWidget.Instance.Enabled(true);
+                    InventoryManager.instance.AddItem("Radio");
                     break;
                 case "Helicopter":
                     GameManager.Instance.GameOver();

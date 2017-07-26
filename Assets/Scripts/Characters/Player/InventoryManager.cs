@@ -5,8 +5,6 @@ public class InventoryManager
 {
 	public static InventoryManager instance;
 
-	public InventoryManager() { }
-
 	public static InventoryManager Instance
 	{
 		get
@@ -14,13 +12,17 @@ public class InventoryManager
 			return instance;
 		}
 	}
+    public InventoryManager()
+    {
+        instance = this;
+    }
 
-	public Dictionary<string, Item> Items = new Dictionary<string, Item>();
+    private List<string> m_ItemIds = new List<string>();
 
-	public bool AquireItem(string itemName)
+	public bool HasItem(string itemName)
 	{
 
-		if (Items.ContainsKey(itemName))
+		if (m_ItemIds.Contains(itemName))
 		{
 			return true;
 		} else
@@ -29,26 +31,26 @@ public class InventoryManager
 		}
 	}
 
-	public void AddItem(string itemName, Item item)
+	public void AddItem(string itemName)
 	{
-		if (Items.ContainsKey(itemName))
+		if (m_ItemIds.Contains(itemName))
 		{
 			Debug.Log("Item Already Exist ");
 		} else
 		{
-			Items.Add(itemName, item);
+			m_ItemIds.Add(itemName);
 		}
 
 	}
 
 	public void RemoveItem(string itemName)
 	{
-		if (Items.ContainsKey(itemName))
+		if (m_ItemIds.Contains(itemName))
 		{
-			Items.Remove(itemName);
+			m_ItemIds.Remove(itemName);
 		} else
 		{
-			Debug.Log("Item Removed ");
+			Debug.Log("Item not found ");
 		}
 	}
 }

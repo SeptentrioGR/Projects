@@ -46,12 +46,10 @@ public class UIManager : MonoBehaviour
     public void OnClickMenu()
     {
         SceneManager.LoadScene(0);
-        GameManager.Instance.m_CurrentGameState = GameStates.Menu;
     }
 
     public void OnClickReset()
     {
-        GameManager.Instance.m_CurrentGameState = GameStates.Game;
         GameManager.Instance.ResetGame();
     }
 }

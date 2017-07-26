@@ -36,18 +36,13 @@ public class Enemy : MonoBehaviour
 			if (Time.time > nextAttack)
 			{
 				nextAttack = Time.time + attackRate;
-				GetComponent<Enemy_AI>().target.SendMessage("Damage", damage);
+				GetComponent<Enemy_AI>().Target.SendMessage("Damage", damage);
 			}
 		}
 		Rawr();
 	}
 
 	void Damage()
-	{
-
-	}
-
-	void OnMouseOver()
 	{
 
 	}

@@ -20,8 +20,7 @@ public class Character : MonoBehaviour
 	[Header("Stamina Thresholds")]
 	public float decreaseWhileWalk;
 	public float decreaseWhileRun;
-	public new Flashlight light;
-	public InventoryManager Inventory;
+	public Flashlight m_Flashlight;
 	public bool UnderWater;
 	private bool HasRadio;
 	private Animator mAnimation;
@@ -60,7 +59,7 @@ public class Character : MonoBehaviour
 		c_controller = GetComponent<CharacterController>();
 		controller.enabled = true;
 		c_controller.enabled = true;
-		light.Initialize(100);
+		m_Flashlight.Initialize(100);
 		StartingTransform = transform.position;
 		StartingRotation = Quaternion.identity;
 
@@ -95,7 +94,7 @@ public class Character : MonoBehaviour
 	{
 		HealthSystem();
 		StaminaSystem();
-		light.Update();
+		m_Flashlight.Update();
 
 		if (itemInUse == 0)
 		{
@@ -112,9 +111,9 @@ public class Character : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.F))
 		{
-			if (light.LightIsPowered())
+			if (m_Flashlight.LightIsPowered())
 			{
-				light.Power();
+				m_Flashlight.Power();
 				itemInUse = 0;
 			}
 			else
@@ -127,9 +126,9 @@ public class Character : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Alpha1) && HasRadio)
 		{
 			itemInUse = 2;
-			if (light.LightIsPowered())
+			if (m_Flashlight.LightIsPowered())
 			{
-				light.Power();
+				m_Flashlight.Power();
 			}
 			UpdateHoldingItems = true;
 		}
@@ -143,7 +142,7 @@ public class Character : MonoBehaviour
 				case 0:
 					break;
 				case 1:
-					light.Power();
+					m_Flashlight.Power();
 					UpdateUsbleItems();
 					break;
 				case 2:
@@ -163,9 +162,9 @@ public class Character : MonoBehaviour
 
 	void Death()
 	{
-		if (light.LightIsPowered())
+		if (m_Flashlight.LightIsPowered())
 		{
-			light.Power();
+			m_Flashlight.Power();
 		}
 
 			StartCoroutine("ResetGame");

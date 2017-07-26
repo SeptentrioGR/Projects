@@ -14,7 +14,8 @@ public class Enemy_AI : MonoBehaviour
 	private Vector3 _direction;
 	private Animator mAnimator;
 	private NavMeshAgent agent;
-	public GameObject target;
+    public Character target;
+
 	//This will be the zombie's speed. Adjust as necessary.
 	public float speed = 16.0f;
 	public float minDistance = 2;
@@ -26,110 +27,106 @@ public class Enemy_AI : MonoBehaviour
 	private Vector3 Destination;
 	public bool IsVisibleByPlayer;
 
+
 	public string[] Animations =
 	{
 		"Walk","Attack","Death","Revive"
 	};
 
+    public Character Target
+    {
+        get
+        {
+            return target;
+        }
+    }
 
-	public void setTarget(GameObject target)
+	public void setTarget(Character target)
 	{
 		this.target = target;
 	}
 
 	void Start()
 	{
-		curAction = Actions.Idle;
 		mAnimator = GetComponent<Animator>();
 		agent = GetComponent<NavMeshAgent>();
 		agent.stoppingDistance = minDistance;
-		setTarget(GameObject.Find("Player"));
-	}
+        //agent.speed = speed;
+        //mAnimator.SetBool(getAnimation(0), walking);
+        //mAnimator.SetBool(getAnimation(1), attacking);
+    }
 
-	void CheckVisibility()
+
+
+    public void UpdateEnemyState()
 	{
-		Vector3 screenPoint = Camera.main.WorldToViewportPoint(transform.position);
-		IsVisibleByPlayer = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
-	}
-
-	void Update()
-	{
-		agent.speed = speed;
-		mAnimator.SetBool(getAnimation(0), walking);
-		mAnimator.SetBool(getAnimation(1), attacking);
-
-		TurnAndLookTarget();
+        Debug.Log("Updating Enemy State of" + gameObject.name); 
+        
 
 		if (target && !IsVisibleByPlayer)
 		{
-			distance = Vector3.Distance(target.transform.position, transform.position);
+            TurnAndLookTarget();
+            distance = Vector3.Distance(target.transform.position, transform.position);
 			if (distance <= minDistance + .5f)
 			{
 				curAction = Actions.Attacking;
 			} else
 			{
 				curAction = Actions.Walking;
-				Destination = target.transform.position;
 			}
 		}
 		else
 		{
 			curAction = Actions.Idle;
 		}
-
-		switch (curAction)
-		{
-			case Actions.Idle:
-				Idle();
-				break;
-			case Actions.Walking:
-				Walk();
-				break;
-			case Actions.Running:
-				break;
-			case Actions.Attacking:
-				Attack();
-				break;
-			case Actions.Hit:
-				break;
-			case Actions.Dead:
-				break;
-			default:
-				break;
-		}
 	}
 
-	void LateUpdate()
-	{
-		CheckVisibility();
-	}
+    private void Update()
+    {
+        switch (curAction)
+        {
+            case Actions.Idle:
+                Idle();
+                break;
+            case Actions.Walking:
+                Walk();
+                break;
+            case Actions.Running:
+                break;
+            case Actions.Attacking:
+                Attack();
+                break;
+            case Actions.Hit:
+                break;
+            case Actions.Dead:
+                break;
+            default:
+                break;
+        }
+    }
 
-	public void setDestination(Vector3 position)
+    public void setDestination(Vector3 position)
 	{
 		agent.SetDestination(position);
 	}
 
 	public void Idle()
 	{
-		//Debug.Log("Is Idle");
 		walking = false;
 		attacking = false;
-		if (!agent.isStopped)
-		{
-			agent.isStopped = true;
-		}
-	}
+        Stop(true);
+    }
 
 	public void Walk()
 	{
-		//Debug.Log("Walk");
 		walking = true;
 		attacking = false;
-		if (agent.isStopped)
-		{
-			agent.isStopped = false;
-		}
-		agent.SetDestination(Destination);
+        Stop(false);
+
+        if (agent.destination != Destination)
+        {
+            agent.SetDestination(target.transform.position);
+        }
 	}
 
 	public void Attack()
@@ -137,12 +134,16 @@ public class Enemy_AI : MonoBehaviour
 		//Debug.Log("Is Attacking");
 		walking = false;
 		attacking = true;
-		if (agent.isStopped)
-		{
-			agent.isStopped = true;
-		}
+        Stop(true);
+    }
 
-	}
+    public void Stop(bool value)
+    {
+        if (agent.isStopped != value)
+        {
+            agent.isStopped = value;
+        }
+    }
 	//====================================================================================================
 	void TurnAndLookTarget()
 	{
@@ -173,22 +174,5 @@ public class Enemy_AI : MonoBehaviour
 	//    transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * RotationSpeed);
 	//}
 	//====================================================================================================
-	public string getAnimation(int number)
-	{
-		switch (number)
-		{
-			case 0:
-				return Animations[0];
-			case 1:
-				return Animations[1];
-			case 2:
-				return Animations[2];
-			case 3:
-				return Animations[3];
-			case 4:
-				return Animations[4];
-			default:
-				throw new System.Exception("Animation Not Found, 1 - 4 available");
-		}
-	}
+
 }
