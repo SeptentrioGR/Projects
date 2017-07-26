@@ -22,18 +22,17 @@ public class GuiManager : MonoBehaviour
         }
     }
 
-    private void Awake()
+    public void Awake()
     {
         if (m_Instance == null)
         {
             m_Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
-        else if (m_Instance != this)
+        else
         {
-            Destroy(this.gameObject);
-            return;
+            Destroy(gameObject);
         }
+        DontDestroyOnLoad(gameObject);
     }
 
     public void AssingActionToButton(ButtonAction action,Button butt)
