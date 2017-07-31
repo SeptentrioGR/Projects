@@ -41,7 +41,9 @@ public class Helicopter : MonoBehaviour {
 	public void CalLHelp()
 	{		
 		Called = true;
-	}
+        NarationManager.Instance.Signal();
+        NarationManager.Instance.StartNaration();
+    }
 
 	public void GoToArea()
 	{

@@ -31,7 +31,6 @@ public class MapWidget : BasicWidget {
 
     public Image GetImageById(string id)
     {
-        Debug.Log("Geting Image by Id");
         foreach(GameObject img in m_ListOfPointOnMap)
         {
             if (img.name.Equals(id))

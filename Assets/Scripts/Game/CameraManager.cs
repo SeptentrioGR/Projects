@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-namespace ZombieRun.Player
+
+namespace ZombieRun
 {
     public class CameraManager : MonoBehaviour
     {
@@ -47,7 +48,7 @@ namespace ZombieRun.Player
             if (hasHit)
             {
                 SimpleCursorChange SimpleCursorChange = m_RaycastHit.collider.GetComponent<SimpleCursorChange>();
-                if (SimpleCursorChange && m_RaycastHit.distance< 5f)
+                if (SimpleCursorChange && m_RaycastHit.distance < 5f)
                 {
                     SimpleCursorChange.ChangeCursorToInteraction();
                     if (Input.GetKeyDown(KeyCode.E))

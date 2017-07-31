@@ -7,11 +7,18 @@ using UnityEngine.UI;
 
 namespace ZombieRun
 {
+
+    public enum GameState
+    {
+        Menu,Game
+    }
+
     public enum GameLevel
     {
         Main = 0,
         Game = 1
     }
+
 
     public class GameManager : MonoBehaviour
     {
@@ -19,9 +26,18 @@ namespace ZombieRun
 
         private float initialFixedDelta;
         private float score;
-        private bool m_GameFinished = false;
-        private bool m_GameIsPaused = false;
+        private bool m_GameFinished;
+        [HideInInspector]
+        public static bool m_GameIsPaused;
 
+        private GameState mCurrentGameState;
+
+        public GameState GetGameState()
+        {
+            return mCurrentGameState;
+        }
+
+        //===========================================================================
         public static GameManager Instance
         {
             get
@@ -29,7 +45,8 @@ namespace ZombieRun
                 return m_Instance;
             }
         }
-        
+
+        //===========================================================================
         void Awake()
         {
             if (m_Instance == null)
@@ -43,38 +60,43 @@ namespace ZombieRun
                 return;
             }
         }
-
+        public void SetGameState(GameState state)
+        {
+            mCurrentGameState = state;
+        }
+        //===========================================================================
         void Start()
         {
             initialFixedDelta = Time.fixedDeltaTime;
-            new InputManager();
+            InputManager input = new InputManager();
         }
 
+        //===========================================================================
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                TogglePause();
-            }
+            InputManager.Instance.Update();
         }
 
- 
+        //===========================================================================
         public void TogglePause()
         {
+            Player player = PlayerManager.Instance.GetPlayer().GetComponent<Player>();
             m_GameIsPaused = !m_GameIsPaused;
+            GameObject panel = PrefabManager.Instance.GetItemInList("PauseMenu");
+            panel.SetActive(!panel.activeSelf);
             Pause(m_GameIsPaused);
+            player.getPlayerController().enabled = !m_GameIsPaused;
+            MouseCursorHandler.Instance.ToggleMouseLock();
         }
 
+        //===========================================================================
         public void Pause(bool isPaused)
         {
-            UIManager.Instance.TogglePausePanel(isPaused);
-            PlayerManager.Instance.GetPlayer().getPlayerController().enabled = !isPaused;
-            InputManager.instance.SetCursorLock(!isPaused);
             if (isPaused)
             {
                 Time.timeScale = 0;
                 Time.fixedDeltaTime = 0;
-
+            
             }
             else if (!isPaused)
             {
@@ -83,21 +105,31 @@ namespace ZombieRun
             }
         }
 
+        //===========================================================================
         public bool IsGameFinished()
         {
             return m_GameFinished;
         }
 
+        //===========================================================================
         public void GameOver()
         {
-            m_GameFinished = true;
-            InputManager.instance.SetCursorLock(false);
-            UIManager.Instance.ToggleWinPanel(true);
+            m_GameFinished = true;         
+            ToggleWinPanel();
         }
 
+        //===========================================================================
         public void ResetGame()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+
+        //===========================================================================
+        public void ToggleWinPanel()
+        {
+            GameObject panel = PrefabManager.Instance.GetItemInList("WinMenu");
+            panel.SetActive(!panel.activeSelf);
+        }    
+
     }
 }

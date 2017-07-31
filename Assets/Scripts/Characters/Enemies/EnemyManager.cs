@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+
 namespace ZombieRun
 {
-    public class EnemyManager : MonoBehaviour
+    [Serializable]
+    public class EnemyManager
     {
         public delegate void EnemyManagerAction();
         public EnemyManagerAction OnEnemyDeath;
@@ -20,7 +23,7 @@ namespace ZombieRun
 
         public GameObject[] enemies;
         public Transform[] spawnLocations;
-        public Queue<Enemy_AI> m_ListOfEnemies = new Queue<Enemy_AI>();
+        public Queue<GameObject> m_ListOfEnemies = new Queue<GameObject>();
 
         public int maxNumberOfEnemies;
         public float TimePassSinceSpawn = 10;
@@ -36,41 +39,44 @@ namespace ZombieRun
         public float StartingTimer;
         public float Timer;
 
-
-        void Awake()
-        {
-            m_Instance = this;
-        }
-
         public void Update()
         {
             if (m_ListOfEnemies.Count > 0)
             {
-                foreach (Enemy_AI em in m_ListOfEnemies)
-                {
-                    m_ListOfEnemies.Peek().UpdateEnemyState();
-                }
+                TimePassSinceSpawn -= Time.deltaTime;
             }
-            TimePassSinceSpawn -= Time.deltaTime;
             if (TimePassSinceSpawn <=0)
             {
                 maxNumberOfEnemies++;
+                DecreaseDistanceOfMonsters();
                 TimePassSinceSpawn = 10;
             }
+
+            Spawn();
+
+           
         }
 
-
+        public void DecreaseDistanceOfMonsters()
+        {
+            foreach (GameObject m in m_ListOfEnemies)
+            {
+                m.GetComponent<MonsterAI>().minDistanceToFollow--;
+            }
+        }
         public void Initialize()
         {
+            m_Instance = this;
             GameObject eh = new GameObject("EnemyHolder");
             EnemyHolder = eh.transform;
+            Timer = StartingTimer;
         }
 
 
         public void Spawn()
         {
           
-            if (numberOfEnemies < maxNumberOfEnemies)
+            if (numberOfEnemies < maxNumberOfEnemies && maxNumberOfEnemies > 0)
             {
                 Timer -= Time.deltaTime;
             }
@@ -92,19 +98,10 @@ namespace ZombieRun
 
         public void SpawnEnemy()
         {
-            Transform spawnPos = spawnLocations[Random.Range(0, spawnLocations.Length)];
-            GameObject en = Instantiate(enemies[0], spawnPos.position, Quaternion.identity) as GameObject;
+            Transform spawnPos = spawnLocations[UnityEngine.Random.Range(0, spawnLocations.Length)];
+            GameObject en = GameObject.Instantiate(enemies[0], spawnPos.position, Quaternion.identity) as GameObject;
             en.transform.SetParent(EnemyHolder, false);
             numberOfEnemies++;
-            en.GetComponent<Enemy_AI>().setTarget(PlayerManager.Instance.GetPlayer());
-            m_ListOfEnemies.Enqueue(en.GetComponent<Enemy_AI>());
-
-        }
-
-        public void SpawnEnemyButton()
-        {
-            GameObject en = Instantiate(enemies[0], spawnLocations[Random.Range(0, spawnLocations.Length)].position, Quaternion.identity) as GameObject;
-            en.transform.SetParent(transform, false);
         }
 
         public void IncreaseWave()

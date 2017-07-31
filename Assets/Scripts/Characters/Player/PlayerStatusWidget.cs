@@ -1,39 +1,41 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-
-public class PlayerStatusWidget : MonoBehaviour
+namespace ZombieRun
 {
-    private static PlayerStatusWidget m_Instance;
-
-    public static PlayerStatusWidget Instance
+    public class PlayerStatusWidget : MonoBehaviour
     {
-        get
+        private static PlayerStatusWidget m_Instance;
+
+        public static PlayerStatusWidget Instance
         {
-            return m_Instance;
+            get
+            {
+                return m_Instance;
+            }
         }
-    }
-    public PlayerStatusWidgetItem[] m_PlayerStatusWidgetItem;
-   
-    private Character m_Player = null;
+        public PlayerStatusWidgetItem[] m_PlayerStatusWidgetItem;
 
-    private void Awake()
-    {
-        m_Instance = this;
-    }
+        private Character m_Player = null;
 
-    public void Initialize()
-    {
-        foreach (PlayerStatusWidgetItem item in m_PlayerStatusWidgetItem)
+        private void Awake()
         {
-            item.Initialize();
+            m_Instance = this;
         }
-    }
 
-    public void RefreshContent()
-    {
-        foreach (PlayerStatusWidgetItem item in m_PlayerStatusWidgetItem)
+        public void Initialize()
         {
-            item.RefreshContent();
+            foreach (PlayerStatusWidgetItem item in m_PlayerStatusWidgetItem)
+            {
+                item.Initialize();
+            }
+        }
+
+        public void RefreshContent()
+        {
+            foreach (PlayerStatusWidgetItem item in m_PlayerStatusWidgetItem)
+            {
+                item.RefreshContent();
+            }
         }
     }
 }

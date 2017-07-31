@@ -31,7 +31,6 @@ public class ClockWidget : BasicWidget
         if (!StartCounting)
         {
             StartCounting = true;
-            new CountDown(1, 0, 5);
         }
     }
 
