@@ -39,7 +39,7 @@ namespace ZombieRun
                 if (Time.time > nextAttack)
                 {
                     nextAttack = Time.time + attackRate;
-                    GetComponent<Enemy_AI>().Target.SendMessage("Damage", damage);
+                    //GetComponent<Enemy_AI>().Target.SendMessage("Damage", damage);
                 }
             }
             Rawr();

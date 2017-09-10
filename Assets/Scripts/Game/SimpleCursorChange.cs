@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,5 +15,6 @@ namespace ZombieRun
         {
             CameraManager.Instance.SetIcon(m_Sprite);
         }
+
     }
 }

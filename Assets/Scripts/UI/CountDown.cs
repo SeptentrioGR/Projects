@@ -11,7 +11,7 @@ public class CountDown
 
     public float speed;
 
-    public CountDown(float minutes,float seconds,float speed)
+    public CountDown(float minutes, float seconds, float speed)
     {
         Instance = this;
         this.startingSeconds = seconds;
@@ -28,15 +28,21 @@ public class CountDown
 
     public void Update()
     {
-        if (m > 0)
+
+        if (s < 1 && m>0)
+        {
+            m--;
+            s = startingSeconds;
+        }
+
+        if (s > 0)
         {
             s -= Time.deltaTime * speed;
-            if (s <= 0)
-            {
-                m--;
-                s = startingSeconds;
-            }
         }
+
+        m = Mathf.Clamp(m, 0, 99);
+        s = Mathf.Clamp(s, 0, 99);
+
     }
 
     public bool TimeIsUp()

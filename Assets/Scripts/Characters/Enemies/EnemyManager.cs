@@ -23,7 +23,7 @@ namespace ZombieRun
 
         public GameObject[] enemies;
         public Transform[] spawnLocations;
-        public Queue<GameObject> m_ListOfEnemies = new Queue<GameObject>();
+        public List<GameObject> m_ListOfEnemies = new List<GameObject>();
 
         public int maxNumberOfEnemies;
         public float TimePassSinceSpawn = 10;
@@ -31,7 +31,7 @@ namespace ZombieRun
         private int numberOfEnemies = 0;
         private int NumberOfEnemies;
         private int EnemyEachWave;
-        private int Wave;
+
 
 
         public float mSpawnTime;
@@ -39,31 +39,95 @@ namespace ZombieRun
         public float StartingTimer;
         public float Timer;
 
+        float nextIncrease;
+        float increaseRate = 1f;
+
+        float nextIncreaseOfMonsters;
+        float increaseOfMonstersRate;
+
+        bool StartingIncreasingSpeed;
+        bool SpawnEnemies;
+
+
+        public void Enabled(bool value)
+        {
+            SpawnEnemies = value;
+        }
+
+        public void DeleteEnemies()
+        {
+            foreach (GameObject m in m_ListOfEnemies)
+            {
+                GameObject.Destroy(m);
+            }
+        }
+
+        public void EnableSpawning(bool value)
+        {
+            SpawnEnemies = value;
+        }
+
         public void Update()
         {
-            if (m_ListOfEnemies.Count > 0)
+            if (SpawnEnemies)
             {
-                TimePassSinceSpawn -= Time.deltaTime;
+                if (m_ListOfEnemies.Count > 0)
+                {
+                    TimePassSinceSpawn -= Time.deltaTime;
+                }
+                
+                if (TimePassSinceSpawn <= 0)
+                {
+                    DecreaseDistanceOfMonsters();
+                    TimePassSinceSpawn = 10;
+                }
+
+                Spawn();
+
+                if (StartingIncreasingSpeed)
+                {
+                    IncreaseSpeed(1);
+                }
+
+                if (Time.time > nextIncrease && maxNumberOfEnemies <= 4)
+                {
+                    nextIncrease = Time.time + increaseRate;
+                    maxNumberOfEnemies++;
+                }
             }
-            if (TimePassSinceSpawn <=0)
+        }
+
+        public void IncreaseEnemiesChaseSpeed()
+        {
+            if (!StartingIncreasingSpeed)
             {
-                maxNumberOfEnemies++;
-                DecreaseDistanceOfMonsters();
-                TimePassSinceSpawn = 10;
+                StartingIncreasingSpeed = !StartingIncreasingSpeed;
             }
+        }
 
-            Spawn();
 
-           
+
+        public void IncreaseSpeed(int value)
+        {
+            if (Time.time > nextIncrease)
+            {
+                nextIncrease = Time.time + increaseRate;
+                foreach (GameObject m in m_ListOfEnemies)
+                {
+                    m.GetComponentInChildren<MonsterAI>().speed += value;
+                }
+            }
+            
         }
 
         public void DecreaseDistanceOfMonsters()
         {
             foreach (GameObject m in m_ListOfEnemies)
             {
-                m.GetComponent<MonsterAI>().minDistanceToFollow--;
+                m.GetComponentInChildren<MonsterAI>().minDistanceToFollow--;
             }
         }
+
         public void Initialize()
         {
             m_Instance = this;
@@ -75,7 +139,7 @@ namespace ZombieRun
 
         public void Spawn()
         {
-          
+
             if (numberOfEnemies < maxNumberOfEnemies && maxNumberOfEnemies > 0)
             {
                 Timer -= Time.deltaTime;
@@ -102,11 +166,7 @@ namespace ZombieRun
             GameObject en = GameObject.Instantiate(enemies[0], spawnPos.position, Quaternion.identity) as GameObject;
             en.transform.SetParent(EnemyHolder, false);
             numberOfEnemies++;
-        }
-
-        public void IncreaseWave()
-        {
-            Wave++;
+            m_ListOfEnemies.Add(en);
         }
 
         public void setEnemyEachWave()

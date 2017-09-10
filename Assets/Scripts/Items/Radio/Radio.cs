@@ -5,24 +5,12 @@ namespace ZombieRun
     public class Radio : MonoBehaviour
     {
         private bool used;
-        private Helicopter Helicopter;
         public GameObject LandingPrefab;
-
-        void Start()
-        {
-            try
-            {
-                Helicopter = PrefabManager.Instance.m_RescueHelicopter;
-            }
-            catch
-            {
-                Debug.LogWarning("Rescue Helicopter does not exist");
-            }
-        }
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.E) && RadioClearArea.Instance.ClearArea && !used)
+            bool CanUseRadio = Input.GetKeyDown(KeyCode.E) && RadioClearArea.Instance.AreaIsClear && !used;
+            if (CanUseRadio)
             {
                 Use();
             }
@@ -39,9 +27,11 @@ namespace ZombieRun
             used = true;
             GameObject go = Instantiate(LandingPrefab,
                 Player.transform.position, Player.transform.rotation) as GameObject;
-            go.name = LandingPrefab.name;
-            Helicopter.CalLHelp();
+            go.name = LandingPrefab.name;  
             gameObject.SetActive(false);
+            Helicopter.Instance.CallHelipter();
         }
+
+        
     }
 }

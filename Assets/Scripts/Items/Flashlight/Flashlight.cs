@@ -34,14 +34,8 @@ namespace ZombieRun
 
         public void Update()
         {
-            if (LightIsPowered())
-            {
-                currentBattery -= mBatteryThreshold * Time.deltaTime;
-            }
-            else
-            {
-                currentBattery += mBatteryThreshold * Time.deltaTime;
-            }
+
+            currentBattery += mBatteryThreshold * Time.deltaTime;
 
             if (currentBattery <= 0 && LightIsPowered())
             {

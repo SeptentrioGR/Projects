@@ -5,8 +5,6 @@ namespace ZombieRun
 {
     public class IsVisibleOrNot : MonoBehaviour
     {
-
-        private GameObject mTarget;
         public bool IsVisibleByPlayer;
         public bool HasBeenSeenByPlayer = false;
 
@@ -17,18 +15,26 @@ namespace ZombieRun
 
         void OnBecameVisible()
         {
-            if (!HasBeenSeenByPlayer)
-            {
-                HasBeenSeenByPlayer = true;
-                MusicManager.Instance.PlaySound(0);
-            }
             IsVisibleByPlayer = true;
         }
 
-        private void Start()
+        private void Update()
         {
-            mTarget = this.gameObject;
-        }
+            if (PlayerManager.Instance == null)
+            {
+                Debug.LogWarning("PlayerManager not Found");
+                return;
+            }
+            Character player = PlayerManager.Instance.GetPlayer();
 
+            float distance = Vector3.Distance(transform.position, player.transform.position);
+
+            if (!HasBeenSeenByPlayer && GetComponent<MeshRenderer>().enabled && IsVisibleByPlayer && Game.Instance.TimeSincePlayedSpookySound <=0)
+            {
+                HasBeenSeenByPlayer = true;
+                MusicManager.Instance.PlaySound(0);
+                Game.Instance.TimeSincePlayedSpookySound = 10.0f;
+            }
+        }
     }
 }

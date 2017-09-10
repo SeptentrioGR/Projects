@@ -30,18 +30,19 @@ public class BasicHeartSoundBasedOnValue
 
     }
 
-    public void Update(ref float Health)
+    public void Update(float Health)
     {
-        if (Health < 90)
+        if (Health < 10)
         {
-            mCurrentAudioClip = mHeartBeatSlow;
+            mCurrentAudioClip = mHeartBeatFast;
         }
         else if (Health < 50)
         {
             mCurrentAudioClip = mHeartBeatMid;
-        }else if (Health < 10)
+        }
+        else if (Health < 90)
         {
-            mCurrentAudioClip = mHeartBeatFast;
+            mCurrentAudioClip = mHeartBeatSlow;
         }
 
         if (Time.time > nextActionTime)

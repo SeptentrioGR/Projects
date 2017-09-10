@@ -5,39 +5,56 @@ using UnityEngine.UI;
 
 namespace ZombieRun {
     public class RadioClearArea : MonoBehaviour {
-        public static RadioClearArea Instance;
-        private Character player;
-        public bool ClearArea;
-        public float timeSinceLastTrigger = 0f;
-        public Image RadioIcon;
 
-        void Start() {
-            player = PlayerManager.Instance.GetPlayer();
-            Instance = this;
-            RadioIcon = PrefabManager.Instance.GetItemInList("RadioIcon").GetComponent<Image>();
+        private static RadioClearArea m_Instance;
+        private bool m_AreaIsClear;
+        public float m_TimeSinceLastTrigger = 0f;
+
+        //----------------------------------------------------------------------------------------------------
+        public bool AreaIsClear {
+            get
+            {
+                return m_AreaIsClear;
+            }
         }
 
+        //----------------------------------------------------------------------------------------------------
+        public static RadioClearArea Instance
+        {
+            get
+            {
+                return m_Instance;
+            }
+        }
 
-        void Update() {
+        //----------------------------------------------------------------------------------------------------
+        void Awake() {
+            m_Instance = this;
+        }
+
+        //----------------------------------------------------------------------------------------------------
+        void LateUpdate() {
+            var player = PlayerManager.Instance.GetPlayer();
             transform.position = player.transform.position;
-            timeSinceLastTrigger += Time.deltaTime;
+            m_TimeSinceLastTrigger += Time.deltaTime;
         }
 
-
+        //----------------------------------------------------------------------------------------------------
         void OnTriggerStay(Collider collider)
         {
             if (collider.tag != "Player")
             {
-                timeSinceLastTrigger = 0f;
-                ClearArea = false;
+                m_TimeSinceLastTrigger = 0f;
+                m_AreaIsClear = false;
             }
         }
 
+        //----------------------------------------------------------------------------------------------------
         void OnTriggerExit(Collider other)
         {
             if (other.tag != "Player")
             {
-                ClearArea = true;
+                m_AreaIsClear = true;
             }
         }
     }

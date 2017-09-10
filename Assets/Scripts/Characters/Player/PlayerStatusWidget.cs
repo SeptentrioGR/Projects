@@ -15,8 +15,6 @@ namespace ZombieRun
         }
         public PlayerStatusWidgetItem[] m_PlayerStatusWidgetItem;
 
-        private Character m_Player = null;
-
         private void Awake()
         {
             m_Instance = this;

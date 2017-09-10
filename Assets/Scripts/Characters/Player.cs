@@ -16,12 +16,15 @@ namespace ZombieRun
 
         private FirstPersonController controller;
         private CharacterController c_controller;
-        private int HoldingItem = 0;
         private bool UpdateHoldingItems;
 
         public Item[] Items;
         private Dictionary<string, GameObject> UsableItems = new Dictionary<string, GameObject>();
         private int itemInUse;
+
+        private float m_TimeSinceRun = 0;
+        private bool Rested = true;
+
 
         public BasicHeartSoundBasedOnValue mHeartBeatingSound;
 
@@ -33,23 +36,25 @@ namespace ZombieRun
         // Use this for initialization
         void Start()
         {
+            Health = 100;
+            Stamina = 100;
+            damage = 25;
+            attackRate = 0.3f;
             controller = GetComponent<FirstPersonController>();
             c_controller = GetComponent<CharacterController>();
             controller.enabled = true;
             c_controller.enabled = true;
             m_Flashlight.Initialize(100);
-            StartingTransform = transform.position;
-            StartingRotation = Quaternion.identity;
+            m_StartingTransform = transform.position;
+            m_StartingRotation = Quaternion.identity;
             mHeartBeatingSound.Initialize(GetComponent<AudioSource>());
-
             InstansiateItems();
         }
 
         public void Reset()
         {
-            HoldingItem = 0;
             UpdateHoldingItems = true;
-            transform.rotation = StartingRotation;
+            transform.rotation = m_StartingRotation;
         }
 
         public void UpdateUsbleItems()
@@ -76,8 +81,11 @@ namespace ZombieRun
         // Update is called once per frame
         void Update()
         {
+            HealthSystem();
+            StaminaSystem();
+
             m_Flashlight.Update();
-            mHeartBeatingSound.Update(ref mHealth);
+            mHeartBeatingSound.Update(Health);
 
 
             if (itemInUse == 0)
@@ -137,6 +145,7 @@ namespace ZombieRun
 
         }
 
+        //----------------------------------------------------------------------------------------------------
         private void ShowItemToUse(string name)
         {
             GameObject go;
@@ -144,6 +153,7 @@ namespace ZombieRun
             go.SetActive(true);
         }
 
+        //----------------------------------------------------------------------------------------------------
         public override void Death()
         {
             if (m_Flashlight.LightIsPowered())
@@ -152,36 +162,50 @@ namespace ZombieRun
             }
         }
 
-
+        //----------------------------------------------------------------------------------------------------
         public override void StaminaSystem()
         {
+            if (!Rested)
+            {
+                m_TimeSinceRun-= Time.deltaTime;
+                m_TimeSinceRun = Mathf.Clamp(m_TimeSinceRun, 0, 2);
+            }
+
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                mStamina -= decreaseWhileRun;
+                Stamina -= RunningThreshold;
+                m_TimeSinceRun = 2;
             }
             else
             {
-                mStamina += 1f;
+                Stamina += .5f;
             }
 
-            if (mStamina <= 0)
+            if (Stamina <= 0)
             {
-                controller.DisableRun(false);
+                Rested = false;
+                controller.WalkingSpeed = 2.5f;
+                controller.RunningSpeed = 3.5f;
             }
-            else
+            else if (Stamina > 0 && Rested)
             {
-                controller.DisableRun(true);
+                controller.WalkingSpeed = 5f;
+                controller.RunningSpeed = 10f;
             }
 
-            mStamina = Mathf.Clamp(mStamina, 0, 100);
+            if (m_TimeSinceRun <= 0)
+            {
+                Rested = true;
+            }
+
+            Stamina = Mathf.Clamp(Stamina, 0, 100);
         }
 
-        void OnTriggerEnter(Collider other)
+        private void OnGUI()
         {
-            if (other.gameObject.GetComponent<Water>())
-            {
-                UnderWater = !UnderWater;
-            }
+            GUI.Label(new Rect(0, 256, 512, 64), String.Format("Rested:{0}", Rested));
+            GUI.Label(new Rect(0, 512, 512, 64), String.Format("Time Since Run:{0}", m_TimeSinceRun));
         }
+
     }
 }

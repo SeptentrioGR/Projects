@@ -68,13 +68,23 @@ namespace ZombieRun
         void Start()
         {
             initialFixedDelta = Time.fixedDeltaTime;
-            InputManager input = new InputManager();
+            new InputManager();
         }
 
         //===========================================================================
         void Update()
         {
             InputManager.Instance.Update();
+
+            if (StartingLoadingScene)
+            {
+                Debug.Log(async.progress);
+                if(async.progress >= 0.9f)
+                {
+                    ActivateScene();
+                }
+            }
+
         }
 
         //===========================================================================
@@ -118,6 +128,13 @@ namespace ZombieRun
             ToggleWinPanel();
         }
 
+        public void StartGame()
+        {
+            levelName = "Game";
+            StartLoading();
+            GameManager.Instance.SetGameState(GameState.Game);
+        }
+ 
         //===========================================================================
         public void ResetGame()
         {
@@ -125,11 +142,49 @@ namespace ZombieRun
         }
 
         //===========================================================================
+        public void GoToMenu()
+        {
+            levelName = "Main";
+            StartLoading();
+            GameManager.Instance.SetGameState(GameState.Menu);
+        }
+
+        //===========================================================================
         public void ToggleWinPanel()
         {
+            Helicopter.Instance.Silence();
+            MouseCursorHandler.Instance.ToggleMouseLock();
             GameObject panel = PrefabManager.Instance.GetItemInList("WinMenu");
             panel.SetActive(!panel.activeSelf);
-        }    
+        }
+
+        public string levelName;
+        AsyncOperation async;
+        public bool StartingLoadingScene;
+
+        public void StartLoading()
+        {
+            if (!StartingLoadingScene)
+            {
+                StartingLoadingScene = !StartingLoadingScene;
+                StartCoroutine("load");
+            }
+        }
+
+        IEnumerator load()
+        {
+            Debug.LogWarning("ASYNC LOAD STARTED - " +
+               "DO NOT EXIT PLAY MODE UNTIL SCENE LOADS... UNITY WILL CRASH");
+            async = SceneManager.LoadSceneAsync(levelName);
+            async.allowSceneActivation = false;
+            yield return async;
+        }
+
+        public void ActivateScene()
+        {
+            StartingLoadingScene = false;
+            async.allowSceneActivation = true;
+        }
 
     }
 }

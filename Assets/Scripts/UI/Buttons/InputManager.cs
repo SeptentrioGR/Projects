@@ -57,10 +57,10 @@ public class InputManager
                     MapWidget.Instance.Toggle();
                 }
 
-                if (Moved())
-                {
-                    MapWidget.Instance.Enabled(false);
-                }
+                //if (Moved())
+                //{
+                //    MapWidget.Instance.Enabled(false);
+                //}
                 break;
         }
 

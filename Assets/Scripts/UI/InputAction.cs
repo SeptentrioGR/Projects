@@ -17,8 +17,8 @@ public class InputAction{
    
     public InputAction(InputActionId actionId,KeyCode[] keycodes)
     {
+        m_ActionId = actionId;
         m_KeyCode = keycodes;
-        m_ActionId = m_ActionId;
     }
 
     public KeyCode[] GetKeyCodes()

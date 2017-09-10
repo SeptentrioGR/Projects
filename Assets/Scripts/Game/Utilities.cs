@@ -10,24 +10,31 @@ public enum Layer
 }
 namespace ZombieRun
 {
-    public class Utilities
+    public class Utilities : MonoBehaviour
     {
-        public static void hitSomethingInFrontOfMe(RaycastHit hit)
+        public bool Debugging = false;
+
+        public void Update()
         {
-            switch (hit.collider.name)
+            if (Debugging)
             {
-                case "Radio_Interactable":
-                    GameObject.Destroy(hit.collider.gameObject);
+                if (Input.GetKeyDown(KeyCode.L))
+                {
+                    Destroy(ItemManager.Instance.GetRadio());
                     InventoryManager.instance.AddItem("Radio");
                     NarationManager.Instance.FoundItem();
                     NarationManager.Instance.StartNaration();
-                    break;
-                case "Helicopter":
-                    GameManager.Instance.GameOver();
-                    break;
-                case "Monster":
- 
-                    break;
+
+                }
+
+                if (Input.GetKeyDown(KeyCode.PageUp))
+                {
+                    CountDown.Instance.speed += 5;
+                }
+                else if (Input.GetKeyDown(KeyCode.PageDown))
+                {
+                    CountDown.Instance.speed -= 5;
+                }
             }
         }
     }

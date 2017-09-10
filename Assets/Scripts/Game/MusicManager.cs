@@ -6,50 +6,29 @@ namespace ZombieRun
 {
 	public class MusicManager : MonoBehaviour
 	{
-		private static MusicManager mInstance;
+		private static MusicManager m_Instance;
         public static MusicManager Instance
         {
             get
             {
-                return mInstance;
+                return m_Instance;
             }
         }
-
-        private AudioSource MusicSource;
-		public AudioClip[] Musics;
+        public AudioSource MusicSource;
+        public AudioClip[] Musics;
         public AudioClip[] Sound;
 
         private void Awake()
         {
-            mInstance = this;
+            m_Instance = this;
+            MusicSource = GetComponent<AudioSource>();
+
         }
-        // Use this for initialization
-        void Start()
-		{
-            if (mInstance == null)
-            {
-                mInstance = this;
-            }
-            else { 
-                Destroy(gameObject);
-			}
-            if (PlayerManager.Instance != null)
-            {
-                MusicSource = PlayerManager.Instance.GetPlayer().GetComponent<AudioSource>();
-            }
-            else
-            {
-                MusicSource = Camera.main.GetComponent<AudioSource>();
-            }
-           
-
-
-            DontDestroyOnLoad(this);
-		}
-
+  
         public void PlaySound(int index)
         {
-            if(!MusicSource.isPlaying && MusicSource.clip != Sound[index]){
+         
+            if (MusicSource && !MusicSource.isPlaying && MusicSource.clip != Sound[index]){
                 MusicSource.PlayOneShot(Sound[index]);
             }
         }

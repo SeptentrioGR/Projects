@@ -34,17 +34,17 @@ namespace ZombieRun
 
         void StatusUpdate()
         {
-            Character m_Player = PlayerManager.Instance.GetPlayer();
+            var player = PlayerManager.Instance.GetPlayer();
             switch (status)
             {
                 case StatusType.Health:
-                    m_Value = m_Player.mHealth;
+                    m_Value = player.Health;
                     break;
                 case StatusType.Stamina:
-                    m_Value = m_Player.mStamina;
+                    m_Value = player.Stamina;
                     break;
                 case StatusType.Sanity:
-                    m_Value = m_Player.GetComponent<Player>().mSanity;
+                    m_Value = player.GetComponent<Player>().mSanity;
                     break;
             }
 

@@ -2,6 +2,9 @@
 public class ItemManager
 {
     private static ItemManager m_Instance;
+    private GameObject[] m_Prefabs;
+    private Transform[] m_SpawnLocations;
+    private GameObject m_RadioInteractable;
 
     public static ItemManager Instance
     {
@@ -11,23 +14,26 @@ public class ItemManager
         }
     }
 
-    private GameObject[] itemToSpawn;
-    private Transform[] SpawnLocations;
+    public GameObject GetRadio()
+    {
+        return m_RadioInteractable;
+    }
 
     public ItemManager(GameObject[] itemToSpawn, Transform[] SpawnLocations)
     {
         m_Instance = this;
-        this.itemToSpawn = itemToSpawn;
-        this.SpawnLocations = SpawnLocations;
-        SpawnRadio();
+        this.m_Prefabs = itemToSpawn;
+        this.m_SpawnLocations = SpawnLocations;
     }
 
     public void SpawnRadio()
 	{
-		int RandomLocation = Random.Range(0, SpawnLocations.Length);
-		Transform location = SpawnLocations[RandomLocation];
-		GameObject radioPrefab = GameObject.Instantiate(itemToSpawn[0], location.position, Quaternion.identity) as GameObject;
-		radioPrefab.gameObject.name = itemToSpawn[0].name;
-		radioPrefab.transform.SetParent(location);
-	}
+		int RandomLocation = Random.Range(0, m_SpawnLocations.Length);
+		var location = m_SpawnLocations[RandomLocation];
+        GameObject radioGO = GameObject.Instantiate(m_Prefabs[0], location.position, Quaternion.identity) as GameObject;
+        radioGO.gameObject.name = m_Prefabs[0].name;
+        radioGO.transform.SetParent(location);
+        m_RadioInteractable = radioGO;
+
+    }
 }

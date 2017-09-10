@@ -8,9 +8,8 @@ namespace ZombieRun
 
     public class PlayerManager
     {
-
-        public static PlayerManager m_Instance;
-        private Character Player;
+        private static PlayerManager m_Instance;
+        private Player Player;
 
         public PlayerManager()
         {
@@ -29,7 +28,11 @@ namespace ZombieRun
 
         public Character GetPlayer()
         {
-            return Player;
+            if (Player)
+            {
+                return Player;
+            }
+            return null;
         }
     }
 }

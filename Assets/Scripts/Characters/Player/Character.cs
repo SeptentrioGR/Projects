@@ -10,64 +10,133 @@ namespace ZombieRun
 
     public abstract class Character : MonoBehaviour
     {
-        public float mHealth = 100;
-        public float mStamina = 100;
+        float m_Health;
+        float m_Stamina;
 
         [Header("Stamina Thresholds")]
-        public float decreaseWhileWalk;
-        public float decreaseWhileRun;
-        public bool UnderWater;
-        private Animator mAnimation;
+        [SerializeField]
+        private float       m_DecreaseWhileWalk;
+        [SerializeField]
+        private float       m_DecreaseWhileRun;
+        private bool        m_UnderWater;
 
-        public Vector3 StartingTransform;
-        public Quaternion StartingRotation;
+        private Animator    m_Animator;
+        public Vector3      m_StartingTransform;
+        public Quaternion   m_StartingRotation;
 
         public Transform Hand;
+        public float nextAttack;
+        public float attackRate;
+        public float damage;
 
+        //----------------------------------------------------------------------------------------------------
+        public bool UnderWater
+        {
+            get
+            {
+                return m_UnderWater;
+            }
+            set
+            {
+                m_UnderWater = value;
+            }
+        }
 
+        //----------------------------------------------------------------------------------------------------
+        public float RunningThreshold
+        {
+            get
+            {
+                return m_DecreaseWhileRun;
+            }
+        }
 
+        //----------------------------------------------------------------------------------------------------
+        public float WalkingThreshold
+        {
+            get
+            {
+                return m_DecreaseWhileWalk;
+            }
+        }
+
+        //----------------------------------------------------------------------------------------------------
+        public float Health
+        {
+            get
+            {
+                return m_Health;
+            }
+            set
+            {
+                m_Health = value;
+            }
+        }
+
+        //----------------------------------------------------------------------------------------------------
+        public float Stamina
+        {
+            get
+            {
+                return m_Stamina;
+            }
+            set
+            {
+                m_Stamina = value;
+            }
+        }
+
+        //----------------------------------------------------------------------------------------------------
         void Start()
         {
-            StartingTransform = transform.position;
-            StartingRotation = Quaternion.identity;
+            m_StartingTransform = transform.position;
+            m_StartingRotation = Quaternion.identity;
         }
 
-
-        // Update is called once per frame
-        void Update()
-        {
-            HealthSystem();
-            StaminaSystem();
-        }
-
+        //----------------------------------------------------------------------------------------------------
         public abstract void Death();
 
-        void HealthSystem()
+        //----------------------------------------------------------------------------------------------------
+        public void HealthSystem()
         {
-            if (UnderWater)
+            if (m_UnderWater)
             {
-                mHealth -= 1f;
+                Health -= 1f;
             }
-            if (mHealth <= 0.0f)
+
+            if (Health <= 0.0f)
             {
                 Death();
             }
-            mHealth = Mathf.Clamp(mHealth, 0, 100);
+
+            m_Health = Mathf.Clamp(Health, 0, 100);
         }
 
+        //----------------------------------------------------------------------------------------------------
         public abstract void StaminaSystem();
 
+        public void Attack(Character Target)
+        {
+            if (Time.time > nextAttack)
+            {
+                nextAttack = Time.time + attackRate;
+                Target.Damage(damage);
+            }
+        }
+
+        //----------------------------------------------------------------------------------------------------
         void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.GetComponent<Water>())
             {
-                UnderWater = !UnderWater;
+                m_UnderWater = !m_UnderWater;
             }
         }
 
+        //----------------------------------------------------------------------------------------------------
         public void Damage(float value)
         {
-            mHealth -= value;
+            m_Health -= value;
         }
     }
 

@@ -19,7 +19,7 @@ namespace ZombieRun
 
         public GameObject[] m_ListOfPrefabs;
 
-        public Character    m_Player;
+        public Player m_Player;
         public EnemyManager m_EnemyManager;
         public GameObject   m_Map;
         public Text Clock;

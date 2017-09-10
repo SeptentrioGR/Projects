@@ -12,11 +12,6 @@ namespace ZombieRun
         public Button mPlayButton;
         public Button mExitButton;
         
-        public void Setup()
-        {
-            SceneManager.LoadScene(0);
-        }
-
         private void Start()
         {
             GuiButtonActionManager.Instance.AssingActionToButton(ButtonAction.Exit, mExitButton);

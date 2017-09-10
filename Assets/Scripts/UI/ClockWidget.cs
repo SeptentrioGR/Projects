@@ -2,46 +2,49 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class ClockWidget : BasicWidget
+namespace ZombieRun
 {
-    public static ClockWidget m_instace;
-    public static ClockWidget Instance
+    public class ClockWidget : BasicWidget
     {
-        get
+        public static ClockWidget m_instace;
+        public static ClockWidget Instance
         {
-            return m_instace;
+            get
+            {
+                return m_instace;
+            }
         }
-    }
-    private void Awake()
-    {
-        m_instace = this;
-    }
-
-    public Text m_Clock;
-    private bool StartCounting = false;
-
-    public bool Counting()
-    {
-        return StartCounting;
-    }
-
-    public void StartTimer()
-    {
-        if (!StartCounting)
+        private void Awake()
         {
-            StartCounting = true;
+            m_instace = this;
         }
-    }
 
-    void Update()
-    {
-        m_Clock.enabled = false;
-        if (StartCounting)
+        public Text m_Clock;
+        private bool StartCounting = false;
+
+        public bool Counting()
         {
-            m_Clock.enabled = true;
-            CountDown.Instance.Update();
-            m_Clock.text = CountDown.Instance.GetString();
+            return StartCounting;
+        }
+
+        public void StartTimer()
+        {
+            if (!StartCounting)
+            {           
+                StartCounting = true;
+            }
+        }
+
+        void Update()
+        {
+            m_Clock.enabled = false;
+            if (StartCounting)
+            {
+                m_Clock.enabled = true;
+                CountDown.Instance.Update();
+                m_Clock.text = CountDown.Instance.GetString();
+            }
+
         }
     }
 }
