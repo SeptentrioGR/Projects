@@ -95,7 +95,7 @@ namespace ZombieRun
             GameObject panel = PrefabManager.Instance.GetItemInList("PauseMenu");
             panel.SetActive(!panel.activeSelf);
             Pause(m_GameIsPaused);
-            player.getPlayerController().enabled = !m_GameIsPaused;
+            //player.getPlayerController().enabled = !m_GameIsPaused;
             MouseCursorHandler.Instance.ToggleMouseLock();
         }
 
