@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityStandardAssets.Water;
 using System;
 using System.Collections.Generic;
+using UnityStandardAssets.Characters.FirstPerson;
 namespace ZombieRun
 {
 
@@ -14,7 +15,7 @@ namespace ZombieRun
         public Flashlight m_Flashlight;
 
         //private FirstPersonController controller;
-        private CharacterController c_controller;
+        private FirstPersonController m_PlayerController;
         private bool UpdateHoldingItems;
 
         public Item[] Items;
@@ -27,10 +28,10 @@ namespace ZombieRun
 
         public BasicHeartSoundBasedOnValue mHeartBeatingSound;
 
-        //public FirstPersonController getPlayerController()
-        //{
-        //    return controller;
-        //}
+        public FirstPersonController getPlayerController()
+        {
+            return m_PlayerController;
+        }
 
         // Use this for initialization
         void Start()
@@ -39,10 +40,9 @@ namespace ZombieRun
             Stamina = 100;
             damage = 25;
             attackRate = 0.3f;
-            //controller = GetComponent<FirstPersonController>();
-            c_controller = GetComponent<CharacterController>();
-            //controller.enabled = true;
-            //c_controller.enabled = true;
+            m_PlayerController = GetComponent<FirstPersonController>();
+           m_PlayerController.enabled = true;
+
             m_Flashlight.Initialize(100);
             m_StartingTransform = transform.position;
             m_StartingRotation = Quaternion.identity;
@@ -183,13 +183,13 @@ namespace ZombieRun
             if (Stamina <= 0)
             {
                 Rested = false;
-                //controller.WalkingSpeed = 2.5f;
-                //controller.RunningSpeed = 3.5f;
+                //m_PlayerController.m_WalkingSpeed = 2.5f;
+                //m_PlayerController.m_RunningSpeed = 5f;
             }
             else if (Stamina > 0 && Rested)
             {
-                //controller.WalkingSpeed = 5f;
-                //controller.RunningSpeed = 10f;
+                //m_PlayerController.m_WalkingSpeed = 5f;
+                //m_PlayerController.m_RunningSpeed = 10f;
             }
 
             if (m_TimeSinceRun <= 0)

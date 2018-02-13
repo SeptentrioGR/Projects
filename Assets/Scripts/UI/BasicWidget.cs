@@ -5,18 +5,18 @@ using UnityEngine;
 public class BasicWidget : MonoBehaviour {
 
 
-    public Canvas m_Canvas;
+    public GameObject m_Panel;
 
 
     public void Enabled(bool value)
     {
-        m_Canvas.gameObject.SetActive(value);
+        m_Panel.gameObject.SetActive(value);
     }
 
     public void Toggle()
     {
-        bool isActive = m_Canvas.gameObject.activeSelf;
-        m_Canvas.gameObject.SetActive(!isActive);
+        bool isActive = m_Panel.gameObject.activeSelf;
+        m_Panel.gameObject.SetActive(!isActive);
     }
 
 }

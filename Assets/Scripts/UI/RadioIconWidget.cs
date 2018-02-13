@@ -20,6 +20,11 @@ public class RadioIconWidget : MonoBehaviour
     private void Awake()
     {
         m_instace = this;
+    
+    }
+
+    private void Start()
+    {
         Enabled(false);
     }
 
@@ -30,8 +35,9 @@ public class RadioIconWidget : MonoBehaviour
 
     public void Enabled(bool value)
     {
-        m_Canvas.enabled = value;
+        GUIManager.Instance.ShowPanel("RadioIcon", value);
     }
+
     public void ChangeIconColor(Color color)
     {
         m_Icon.color = color;

@@ -70,16 +70,15 @@ public class NarationManager : MonoBehaviour {
 
     // Use this forinitialization
     void Start () {
-        mCanvas.gameObject.SetActive(false);   
+        GUIManager.Instance.ShowPanel("Naration", false);
     }
 	
 	// Update is called once per frame
 	void Update () {
-
-        mCanvas.gameObject.SetActive(false);
+        GUIManager.Instance.ShowPanel("Naration", false);
         if (startNaration)
         {
-            mCanvas.gameObject.SetActive(true);
+            GUIManager.Instance.ShowPanel("Naration", true);
 
             if (showNext)
             {

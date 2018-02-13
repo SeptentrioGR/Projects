@@ -7,41 +7,50 @@ public class PlayerController : MonoBehaviour {
     public string m_HorizontalString = "Horizontal";
 
     public float m_Speed;
-    public float m_JumpSpeed;
 
-    public bool m_IsGrounded;
-    public bool m_Jumped;
-    public float m_Gravity;
+    public bool m_Running;
 
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    public float m_WalkingSpeed;
+    public float m_RunningSpeed;
+
+
+    void Update () {
 
         float vertical = Input.GetAxis(m_VerticalString);
         float horizontal = Input.GetAxis(m_HorizontalString);
 
+        Vector2 m_Input = new Vector2(horizontal, vertical);
 
-        transform.position += transform.forward * m_Speed * vertical * Time.deltaTime;
-
-        transform.position += transform.right * m_Speed * horizontal * Time.deltaTime;
-
+        Vector3 direction = transform.forward * m_Input.y;
 
 
+        if (m_Running)
+        {
+            m_Speed = m_RunningSpeed;
+        }
+        else
+        {
+            m_Speed = m_WalkingSpeed;
+        }
+
+
+        var newPosition = transform.position;
+
+        newPosition += transform.forward * vertical * m_Speed * Time.deltaTime;
+        newPosition += transform.right * horizontal * m_Speed * Time.deltaTime;
+
+        transform.position = newPosition;
+
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            m_Running = true;
+        }
+        else 
+        {
+            m_Running = false;
+        }
+   
     }
 
-
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        m_IsGrounded = true;
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        m_IsGrounded = false;
-    }
 }
